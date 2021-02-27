@@ -1,0 +1,16 @@
+.Trophy {
+  height: 3rem;
+  width: 3rem;
+  position: relative;
+
+  &--Icon {
+    height: 100%;
+    position: absolute;
+
+    img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+}

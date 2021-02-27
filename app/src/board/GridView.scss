@@ -1,0 +1,12 @@
+@import "src/style/vars";
+
+.Grid {
+  display: flex;
+  flex-wrap: wrap;
+  //background-color: #f8ecc2;
+
+  border-bottom: $cell-border-width solid $color-cell-border;
+  border-right: $cell-border-width solid $color-cell-border;
+  margin-top: -2 * $cell-border-width;
+  margin-left: -2 * $cell-border-width;
+}

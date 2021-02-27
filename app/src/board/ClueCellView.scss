@@ -1,0 +1,13 @@
+@import "src/style/vars";
+
+.ClueCell {
+  &--Clue {
+    width: 100%;
+    height: 100%;
+    border-top: $cell-border-width solid $color-clue-border;
+    border-left: $cell-border-width solid $color-clue-border;
+    text-align: center;
+    font-weight: bold;
+    cursor: default;
+  }
+}

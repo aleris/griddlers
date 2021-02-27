@@ -1,0 +1,39 @@
+.Achievements {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .Count {
+    font-size: 2rem;
+    line-height: 3rem;
+    font-weight: bold;
+    color: #444;
+  }
+
+  .Icon {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+
+  &--Medals {
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+
+    .Icon {
+      margin-left: 0.5rem;
+    }
+  }
+
+  &--Trophy {
+    margin-left: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+
+    .Count {
+      margin-left: 0.5rem;
+    }
+  }
+}

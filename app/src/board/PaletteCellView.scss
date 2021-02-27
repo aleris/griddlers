@@ -1,0 +1,42 @@
+@import "src/style/vars";
+
+.PaletteCell {
+  cursor: pointer;
+
+  &--Fill {
+    width: 100%;
+    height: 100%;
+    border: 1px solid $color-cell-border;
+    box-sizing: border-box;
+    padding: 4px;
+
+    svg {
+      width: 100%;
+      object-fit: contain;
+    }
+
+    &--Color {
+      svg path {
+        fill: #fff;
+      }
+
+      &:hover {
+        filter: brightness(80%);
+      }
+    }
+
+    &--Empty {
+      svg path {
+        fill: #222;
+      }
+
+      &:hover {
+        background-color: $color-highlight;
+
+        svg path {
+          fill: #fff;
+        }
+      }
+    }
+  }
+}

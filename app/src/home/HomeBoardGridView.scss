@@ -1,0 +1,10 @@
+@import "../style/vars";
+
+.HomeBoardGrid {
+  display: flex;
+  flex-wrap: wrap;
+
+  &--Cell {
+    box-shadow: 0 0 $cell-border-width 0 $color-cell-border;
+  }
+}

@@ -1,0 +1,10 @@
+@import "src/style/vars";
+
+.CluesHRegion {
+  display: flex;
+  flex-wrap: wrap;
+
+  border-bottom: $cell-border-width solid $color-clue-border;
+  margin-top: -2 * $cell-border-width;
+  margin-left: -2 * $cell-border-width;
+}

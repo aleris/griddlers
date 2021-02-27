@@ -1,0 +1,54 @@
+@import "../style/animations";
+
+$particles: 75;
+$width: 512;
+$height: 512;
+
+$box-shadow: ();
+
+@for $i from 0 through $particles {
+  $box-shadow: $box-shadow,
+    (random($width) - $width / 2) +
+      px
+      (random($height) - $height / 1.2) +
+      px
+      hsl(random(360), 100, 50);
+}
+
+.SuccessAnimationContainer {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:before {
+    left: 50%;
+    top: 50%;
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    animation: 1s bang ease-out backwards, 1s gravity ease-in backwards;
+  }
+
+  & > div {
+    animation: jello-horizontal 1s 0.5s both;
+  }
+}
+
+@keyframes bang {
+  to {
+    box-shadow: $box-shadow;
+  }
+}
+
+@keyframes gravity {
+  to {
+    transform: translateY(256px);
+    opacity: 0;
+  }
+}

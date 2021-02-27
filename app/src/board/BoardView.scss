@@ -1,0 +1,66 @@
+@import "src/style/animations";
+
+.Board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: scale-in-center 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+
+  &--Sheet {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &--Palette {
+    margin-top: 1rem;
+
+    &--Won {
+      animation: scale-out-center 0.25s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+        both;
+    }
+  }
+
+  &--Next {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -2rem;
+    transform: translateX(-1000px);
+
+    & > .Medals {
+      height: 2rem;
+      margin-right: 1rem;
+
+      img {
+        height: 2rem;
+        transform: scale(0);
+        opacity: 0;
+      }
+
+    }
+
+    & > .Button {
+      transform: translateX(-1000px);
+      opacity: 0;
+    }
+
+    &--Won {
+      transform: translateX(0);
+      & > .Medals {
+        & > img {
+          animation: pop-in-center 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.25s both;
+        }
+      }
+      & > .Button {
+        animation: slide-in-left 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s both;
+      }
+    }
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .Board {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+}
