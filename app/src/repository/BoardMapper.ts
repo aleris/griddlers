@@ -20,6 +20,7 @@ export class BoardMapper {
     return BoardBuilder.buildBoardFromFillMatrix(
       board.id,
       board.grid,
+      spec.difficulty,
       spec.palette
     );
   }

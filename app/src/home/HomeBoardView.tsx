@@ -29,7 +29,7 @@ export const HomeBoardView = ({ board, completed, onClick }: Props) => {
           <dt>Size:</dt>
           <dd>{`${BoardSupport.height(board)}x${BoardSupport.width(
             board
-          )}`}</dd>
+          )}`}: {board.difficulty}</dd>
           <dt className="MedalsLabel">Medals:</dt>
           <dd>
             <DifficultyView

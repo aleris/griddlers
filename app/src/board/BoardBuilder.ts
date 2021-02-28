@@ -10,6 +10,7 @@ export class BoardBuilder {
     return this.buildBoardFromFillMatrix(
       pictureSpec.id,
       fillMatrix,
+      pictureSpec.difficulty,
       pictureSpec.palette
     );
   }
@@ -39,6 +40,7 @@ export class BoardBuilder {
   static buildBoardFromFillMatrix(
     id: string,
     fillMatrix: Fill[][],
+    difficulty: number,
     paletteSpec: PaletteSpec
   ): Board {
     const grid: Grid = this.buildGridFromFillMatrix(fillMatrix);
@@ -51,9 +53,10 @@ export class BoardBuilder {
       cluesV,
       cluesH,
       grid,
+      difficulty,
       palette,
       currentPaletteFill,
-      completed: false,
+      completed: false
     };
   }
 

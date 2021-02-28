@@ -24,15 +24,7 @@ export class BoardSupport {
   }
 
   static difficultyShown(board: Board): number {
-    return Math.ceil(this.difficulty(board) / 24);
-  }
-
-  static difficulty(board: Board): number {
-    return (
-      (this.cluesVSize(board) + this.cluesHSize(board)) * 4 +
-      this.height(board) +
-      this.width(board)
-    );
+    return Math.floor(board.difficulty);
   }
 
   static mapEachCell<T>(

@@ -33,6 +33,7 @@ export type Board = {
   cluesV: ClueLine[];
   cluesH: ClueLine[];
   grid: Grid;
+  difficulty: number;
   palette: Palette;
   currentPaletteFill: Fill;
   completed: boolean;

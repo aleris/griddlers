@@ -6,4 +6,5 @@ export type PictureSpec = {
   id: string;
   cellSpecs: string;
   palette: PaletteSpec;
+  difficulty: number;
 };

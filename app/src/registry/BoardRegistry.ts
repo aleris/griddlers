@@ -46,7 +46,7 @@ export class BoardRegistry {
     const persistedList = await CompletedBoardsRepository.list();
     return persistedList
       .map((persistedBoard) => BoardMapper.fromPersisted(persistedBoard))
-      .sort((a, b) => BoardSupport.difficulty(b) - BoardSupport.difficulty(a));
+      .sort((a, b) => b.difficulty - a.difficulty);
   }
 
   static async completeBoard(filledBoard: Board): Promise<Board | null> {
