@@ -1,6 +1,8 @@
 import "./CellView.scss";
 import React from "react";
-import { Cell, Fill, Reveal } from "./Board";
+import classNames from '../classNames'
+import {Cell, FillMarkedEmpty} from "./Board";
+import {FillSupport} from './FillSupport'
 
 type Props = {
   cell: Cell;
@@ -8,36 +10,19 @@ type Props = {
   onClick: () => void;
 };
 
-function getFillByReveal(cell: Cell): Fill {
-  switch (cell.reveal) {
-    case Reveal.Fill:
-      return cell.fill;
-    case Reveal.Guessed:
-      return cell.guessed;
-    case Reveal.Incorrect:
-    default:
-      return cell.fill;
-  }
-}
-
 export const CellView = ({ cell, cellSize, onClick }: Props) => {
-  const fill = getFillByReveal(cell);
-  const fillColor = fill ?? "none";
+  const fillColor = FillSupport.toColor(cell.guessed);
   return (
     <div
-      className="Cell"
+      className={classNames("Cell", {
+        "MarkedEmpty": cell.guessed === FillMarkedEmpty
+      })}
       style={{
         width: `${cellSize}rem`,
         height: `${cellSize}rem`,
+        backgroundColor: fillColor
       }}
       onClick={onClick}
-    >
-      <div
-        className="Cell--Fill"
-        style={{
-          backgroundColor: fillColor,
-        }}
-      />
-    </div>
+    />
   );
 };

@@ -1,21 +1,16 @@
-export type Empty = "";
+type Empty = "";
+type MarkedEmpty = "X";
 
 export type Color = string;
 
 export type Fill = Color | Empty | null;
 
-export const FillEmpty = "";
-
-export enum Reveal {
-  Guessed,
-  Fill,
-  Incorrect,
-}
+export const FillEmpty: Empty = "";
+export const FillMarkedEmpty: MarkedEmpty = "X";
 
 export type Cell = {
   fill: Fill;
   guessed: Fill | null;
-  reveal: Reveal;
 };
 
 export type CoordinateKey = `${number}:${number}`;

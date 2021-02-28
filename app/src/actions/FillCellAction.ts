@@ -24,6 +24,7 @@ export const fillCellReducer = (
     coordinate,
     fill
   );
+  console.log('fillCellReducer grid after', grid)
   return {
     ...state,
     selectedBoard: {

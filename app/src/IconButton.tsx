@@ -3,7 +3,8 @@ import React, { ReactNode, useState } from "react";
 import classNames from "./classNames";
 
 type Props = {
-  type: "Primary" | "Secondary";
+  type?: "Primary" | "Default";
+  size?: "Default" | "Small";
   disabled?: boolean;
   icon: ReactNode;
   onAnimationStarted?: () => void;
@@ -11,7 +12,8 @@ type Props = {
 };
 
 export const IconButton = ({
-  type,
+  type = "Default",
+  size = "Default",
   disabled = false,
   icon,
   onAnimationStarted,
@@ -29,6 +31,7 @@ export const IconButton = ({
   const buttonClassName = classNames("IconButton", {
     Animate: animate,
     [type]: true,
+    [`Size${size}`]: true
   });
 
   return (

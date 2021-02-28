@@ -5,6 +5,6 @@
   flex-wrap: wrap;
 
   &--Cell {
-    box-shadow: 0 0 $cell-border-width 0 $color-cell-border;
+    box-shadow: 0 0 0 $cell-border-width $color-cell-border;
   }
 }

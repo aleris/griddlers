@@ -3,8 +3,6 @@
 .CluesVRegion {
   display: flex;
   flex-wrap: wrap;
-
-  border-right: $cell-border-width solid $color-clue-border;
-  margin-top: -2 * $cell-border-width;
-  margin-left: -2 * $cell-border-width;
+  margin-top: -$cell-border-width;
+  margin-left: -$cell-border-width;
 }

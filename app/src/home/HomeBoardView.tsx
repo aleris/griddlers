@@ -17,13 +17,12 @@ type Props = {
 export const HomeBoardView = ({ board, completed, onClick }: Props) => {
   const [selected, setSelected] = useState(false);
   const gridClassName = classNames("HomeBoard--Grid", {
-    Selected: selected,
-    Obfuscated: !completed,
+    Selected: selected
   });
   return (
     <div className="HomeBoard">
       <div className={gridClassName}>
-        <HomeBoardGridView board={board} />
+        <HomeBoardGridView board={board} hideFills={!completed} size={completed ? "Default" : "Large"} />
       </div>
       <div className="HomeBoard--Properties">
         <dl>
@@ -41,7 +40,8 @@ export const HomeBoardView = ({ board, completed, onClick }: Props) => {
         </dl>
         <div className="HomeBoard--Button">
           <IconButton
-            type={completed ? "Secondary" : "Primary"}
+            type={completed ? "Default" : "Primary"}
+            size={completed ? "Small" : "Default"}
             icon={IconNext}
             onAnimationStarted={() => setSelected(true)}
             onAnimationFinished={onClick}

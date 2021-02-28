@@ -43,11 +43,17 @@ $icon-button-shadow: inset 0 1px rgba(255, 255, 255, 0.3),
     }
   }
 
-  &--Secondary {
+  &--Default {
     background-color: #aa9;
 
     &:hover {
       background-color: darken(#aa9, 10%);
     }
+  }
+
+  &--SizeSmall {
+    padding: 0.2rem;
+    height: 0.75rem;
+    max-width: 3rem;
   }
 }

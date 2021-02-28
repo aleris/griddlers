@@ -1,6 +1,7 @@
 import "./PaletteCellView.scss";
 import classNames from "../classNames";
-import { Fill, FillEmpty } from "./Board";
+import {Fill, FillEmpty, FillMarkedEmpty} from "./Board";
+import {FillSupport} from './FillSupport'
 
 type Props = {
   fill: Fill;
@@ -21,11 +22,12 @@ export const PaletteCellView = ({
   checked,
   onClick,
 }: Props) => {
+  const fillColor = FillSupport.toColor(fill);
   const classNameFill = classNames("PaletteCell--Fill", {
-    Color: fill !== FillEmpty,
+    Color: !FillSupport.isEmptyOrMarkedEmpty(fill),
     Empty: fill === FillEmpty,
+    MarkedEmpty: fill === FillMarkedEmpty
   });
-  const fillColor = `${fill ?? "none"}`;
   return (
     <div
       className="PaletteCell"

@@ -6,7 +6,7 @@
   &--Fill {
     width: 100%;
     height: 100%;
-    border: 1px solid $color-cell-border;
+    box-shadow: 0 0 0 $cell-border-width $color-cell-border;
     box-sizing: border-box;
     padding: 4px;
 
@@ -25,7 +25,7 @@
       }
     }
 
-    &--Empty {
+    &--Empty, &--MarkedEmtpy {
       svg path {
         fill: #222;
       }
@@ -37,6 +37,10 @@
           fill: #fff;
         }
       }
+    }
+
+    &--MarkedEmpty {
+      background-image: url('../assets/cross.svg');
     }
   }
 }

@@ -1,7 +1,8 @@
 import { PaletteSpec, PictureSpec } from "../registry/PictureSpec";
-import { Board, Fill, FillEmpty, Grid, Reveal } from "./Board";
+import {Board, Fill, FillEmpty, Grid} from "./Board";
 import { BoardClues } from "./BoardClues";
 import { BoardSupport } from "./BoardSupport";
+import {FillSupport} from './FillSupport'
 
 export class BoardBuilder {
   static buildBoardFromPictureSpec(pictureSpec: PictureSpec): Board {
@@ -27,8 +28,8 @@ export class BoardBuilder {
     for (let ri = 0; ri !== rows.length; ri++) {
       const rowSpec = rows[ri].split("");
       const row = rowSpec.map((colSpec) => {
-        const color = palette[colSpec];
-        return color !== undefined ? color : FillEmpty;
+        const fill = palette[colSpec];
+        return fill !== undefined ? fill : FillEmpty;
       });
       grid.push(row);
     }
@@ -43,11 +44,8 @@ export class BoardBuilder {
     const grid: Grid = this.buildGridFromFillMatrix(fillMatrix);
     const cluesV = BoardClues.extractCluesV(fillMatrix);
     const cluesH = BoardClues.extractCluesH(fillMatrix);
-    const palette = Object.values(paletteSpec) as Fill[];
-    const currentPaletteFill =
-      palette.filter((fill) => fill !== FillEmpty)[0] ??
-      palette[0] ??
-      FillEmpty;
+    const palette = this.buildPaletteFromSpec(paletteSpec);
+    const currentPaletteFill = this.getFirstColorFill(palette);
     return {
       id,
       cluesV,
@@ -67,9 +65,19 @@ export class BoardBuilder {
     BoardSupport.mapEachCell(
       board,
       (cell, coordinateKey, rowIndex, colIndex) =>
-        (fillMatrix[rowIndex][colIndex] = cell.guessed)
+        (fillMatrix[rowIndex][colIndex] = FillSupport.fillMarkedEmptyToEmpty(cell.guessed))
     );
     return fillMatrix;
+  }
+
+  private static buildPaletteFromSpec(paletteSpec: PaletteSpec) {
+    return (Object.values(paletteSpec) as Fill[]).map(fill => FillSupport.fillEmptyToMarkedEmpty(fill))
+  }
+
+  private static getFirstColorFill(palette: (string | null)[]) {
+    return palette.filter((fill) => !FillSupport.isEmptyOrMarkedEmpty(fill))[0] ??
+      palette[0] ??
+      FillEmpty
   }
 
   private static buildGridFromFillMatrix(fillGrid: Fill[][]): Grid {
@@ -77,12 +85,11 @@ export class BoardBuilder {
     for (let ri = 0; ri !== fillGrid.length; ri++) {
       const row = fillGrid[ri];
       for (let ci = 0; ci !== row.length; ci++) {
-        const fill = row[ci];
+        const fill = FillSupport.fillMarkedEmptyToEmpty(row[ci]);
         const coordinateKey = BoardSupport.gridCoordinate(ri, ci);
         grid[coordinateKey] = {
           fill,
-          guessed: FillEmpty,
-          reveal: Reveal.Guessed,
+          guessed: FillEmpty
         };
       }
     }

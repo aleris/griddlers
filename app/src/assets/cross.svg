@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <path
+            stroke="#222"
+            stroke-linecap="round"
+            stroke-width="4"
+            d="M2 2l508 508M510 2L2 510"
+    />
+</svg>

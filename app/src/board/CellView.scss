@@ -2,16 +2,13 @@
 
 .Cell {
   cursor: pointer;
+  box-shadow: 0 0 0 $cell-border-width $color-cell-border;
 
-  &--Fill {
-    width: 100%;
-    height: 100%;
-    border-top: $cell-border-width solid $color-cell-border;
-    border-left: $cell-border-width solid $color-cell-border;
+  &--MarkedEmpty {
+    background-image: url('../assets/cross.svg');
+  }
 
-    &:hover {
-      background-color: $color-highlight;
-      filter: brightness(80%);
-    }
+  &:hover {
+    filter: brightness(80%);
   }
 }

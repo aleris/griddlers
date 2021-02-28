@@ -1,5 +1,6 @@
 import "./BoardPage.scss";
 import React, { useContext, useEffect } from "react";
+import {useHistory} from 'react-router-dom'
 import { changePaletteFillAction } from "../actions/ChangePaletteFillAction";
 import { fillCellAction } from "../actions/FillCellAction";
 import { loadFromLocalStorageAction } from "../actions/LoadFromLocalStorageAction";
@@ -31,6 +32,7 @@ export const BoardPage = () => {
       fillCellAction(coordinateKey, state.selectedBoard.currentPaletteFill)
     );
   };
+  const history = useHistory();
   const handleOnNextClick = () => {
     if (state.nextBoard === null) {
       console.error("BoardPage handleOnNextClick nextBoard is null");
@@ -38,6 +40,7 @@ export const BoardPage = () => {
     }
     console.log("handleOnNextClick", state.nextBoard.id);
     dispatch(selectBoardAction(state.nextBoard.id));
+    history.push('/')
   };
 
   return (

@@ -6,17 +6,6 @@ export const IconNext = (
   </svg>
 );
 
-export const IconCross = (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <path
-      fill="none"
-      stroke-linecap="round"
-      stroke-width="4"
-      d="M2 2l508 508M510 2L2 510"
-    />
-  </svg>
-);
-
 export const IconBlock = (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     <rect width="448" height="448" x="32" y="32" rx="32" ry="32" />
