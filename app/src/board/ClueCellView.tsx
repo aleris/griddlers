@@ -11,7 +11,11 @@ export const ClueCellView = ({ clue, cellSize }: Props) => {
   return (
     <div
       className="ClueCell"
-      style={{ width: `${cellSize}rem`, height: `${cellSize}rem`, color: clue.fill ?? "none" }}
+      style={{
+        width: `${cellSize}rem`,
+        height: `${cellSize}rem`,
+        color: clue.fill ?? "none",
+      }}
     >
       {clue.fill !== FillEmpty ? clue.count : null}
     </div>

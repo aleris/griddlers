@@ -1,8 +1,8 @@
 import { PaletteSpec, PictureSpec } from "../registry/PictureSpec";
-import {Board, Fill, FillEmpty, Grid} from "./Board";
+import { Board, Fill, FillEmpty, Grid } from "./Board";
 import { BoardClues } from "./BoardClues";
 import { BoardSupport } from "./BoardSupport";
-import {FillSupport} from './FillSupport'
+import { FillSupport } from "./FillSupport";
 
 export class BoardBuilder {
   static buildBoardFromPictureSpec(pictureSpec: PictureSpec): Board {
@@ -56,7 +56,7 @@ export class BoardBuilder {
       difficulty,
       palette,
       currentPaletteFill,
-      completed: false
+      completed: false,
     };
   }
 
@@ -68,19 +68,25 @@ export class BoardBuilder {
     BoardSupport.mapEachCell(
       board,
       (cell, coordinateKey, rowIndex, colIndex) =>
-        (fillMatrix[rowIndex][colIndex] = FillSupport.fillMarkedEmptyToEmpty(cell.guessed))
+        (fillMatrix[rowIndex][colIndex] = FillSupport.fillMarkedEmptyToEmpty(
+          cell.guessed
+        ))
     );
     return fillMatrix;
   }
 
   private static buildPaletteFromSpec(paletteSpec: PaletteSpec) {
-    return (Object.values(paletteSpec) as Fill[]).map(fill => FillSupport.fillEmptyToMarkedEmpty(fill))
+    return (Object.values(paletteSpec) as Fill[]).map((fill) =>
+      FillSupport.fillEmptyToMarkedEmpty(fill)
+    );
   }
 
   private static getFirstColorFill(palette: (string | null)[]) {
-    return palette.filter((fill) => !FillSupport.isEmptyOrMarkedEmpty(fill))[0] ??
+    return (
+      palette.filter((fill) => !FillSupport.isEmptyOrMarkedEmpty(fill))[0] ??
       palette[0] ??
       FillEmpty
+    );
   }
 
   private static buildGridFromFillMatrix(fillGrid: Fill[][]): Grid {
@@ -92,7 +98,7 @@ export class BoardBuilder {
         const coordinateKey = BoardSupport.gridCoordinate(ri, ci);
         grid[coordinateKey] = {
           fill,
-          guessed: FillEmpty
+          guessed: FillEmpty,
         };
       }
     }

@@ -1,6 +1,6 @@
 import "./BoardPage.scss";
 import React, { useContext, useEffect } from "react";
-import {useHistory} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import { changePaletteFillAction } from "../actions/ChangePaletteFillAction";
 import { fillCellAction } from "../actions/FillCellAction";
 import { loadFromLocalStorageAction } from "../actions/LoadFromLocalStorageAction";
@@ -40,7 +40,7 @@ export const BoardPage = () => {
     }
     console.log("handleOnNextClick", state.nextBoard.id);
     dispatch(selectBoardAction(state.nextBoard.id));
-    history.push('/')
+    history.push("/");
   };
 
   return (

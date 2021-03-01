@@ -1,8 +1,8 @@
 import "./CellView.scss";
 import React from "react";
-import classNames from '../classNames'
-import {Cell, FillMarkedEmpty} from "./Board";
-import {FillSupport} from './FillSupport'
+import classNames from "../classNames";
+import { Cell, FillMarkedEmpty } from "./Board";
+import { FillSupport } from "./FillSupport";
 
 type Props = {
   cell: Cell;
@@ -15,12 +15,12 @@ export const CellView = ({ cell, cellSize, onClick }: Props) => {
   return (
     <div
       className={classNames("Cell", {
-        "MarkedEmpty": cell.guessed === FillMarkedEmpty
+        MarkedEmpty: cell.guessed === FillMarkedEmpty,
       })}
       style={{
         width: `${cellSize}rem`,
         height: `${cellSize}rem`,
-        backgroundColor: fillColor
+        backgroundColor: fillColor,
       }}
       onClick={onClick}
     />

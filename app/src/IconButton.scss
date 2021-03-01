@@ -18,7 +18,7 @@ $icon-button-shadow: inset 0 1px rgba(255, 255, 255, 0.3),
 
   &:focus,
   &:active {
-    box-shadow: $icon-button-shadow, 0 0 0 2px darken($color-highlight, 20%);
+    box-shadow: $icon-button-shadow, 0 0 0 2px $color-highlight;
   }
 
   & > svg {
@@ -36,18 +36,18 @@ $icon-button-shadow: inset 0 1px rgba(255, 255, 255, 0.3),
   }
 
   &--Primary {
-    background-color: $color-highlight;
+    background-color: $color-primary;
 
     &:hover {
-      background-color: darken($color-highlight, 10%);
+      background-color: darken($color-primary, 10%);
     }
   }
 
   &--Default {
-    background-color: #aa9;
+    background-color: $color-default;
 
     &:hover {
-      background-color: darken(#aa9, 10%);
+      background-color: darken($color-default, 10%);
     }
   }
 

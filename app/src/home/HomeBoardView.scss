@@ -7,6 +7,9 @@
 
   &--Grid {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &--Selected {
       //animation: scale-out-center 0.5s cubic-bezier(0.47, 0, 0.745, 0.715) both;

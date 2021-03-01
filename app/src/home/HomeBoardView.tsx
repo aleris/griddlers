@@ -17,19 +17,23 @@ type Props = {
 export const HomeBoardView = ({ board, completed, onClick }: Props) => {
   const [selected, setSelected] = useState(false);
   const gridClassName = classNames("HomeBoard--Grid", {
-    Selected: selected
+    Selected: selected,
   });
   return (
     <div className="HomeBoard">
       <div className={gridClassName}>
-        <HomeBoardGridView board={board} hideFills={!completed} size={completed ? "Default" : "Large"} />
+        <HomeBoardGridView
+          board={board}
+          hideFills={!completed}
+          size={completed ? "Default" : "Large"}
+        />
       </div>
       <div className="HomeBoard--Properties">
         <dl>
           <dt>Size:</dt>
           <dd>{`${BoardSupport.height(board)}x${BoardSupport.width(
             board
-          )}`}: {board.difficulty}</dd>
+          )}`}</dd>
           <dt className="MedalsLabel">Medals:</dt>
           <dd>
             <DifficultyView

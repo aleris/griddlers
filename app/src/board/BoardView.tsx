@@ -99,12 +99,21 @@ export const BoardView = ({
             onFillChange={onPaletteFillChange}
           />
         </div>
-        <div className={classNames("Board--Next", {
-          Won: board.completed,
-        })}>
+        <div
+          className={classNames("Board--Next", {
+            Won: board.completed,
+          })}
+        >
           <div className="Medals">
-            {Array.from({length: BoardSupport.difficultyShown(board)}).map((_, index) =>
-              <img key={index} src={MedalColor} style={{animationDelay: `${1.25 + index * 0.1}s`}} alt={`Medal ${index + 1}`}/>
+            {Array.from({ length: BoardSupport.difficultyShown(board) }).map(
+              (_, index) => (
+                <img
+                  key={index}
+                  src={MedalColor}
+                  style={{ animationDelay: `${1.25 + index * 0.1}s` }}
+                  alt={`Medal ${index + 1}`}
+                />
+              )
             )}
           </div>
           <div className="Button">

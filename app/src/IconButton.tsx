@@ -31,7 +31,7 @@ export const IconButton = ({
   const buttonClassName = classNames("IconButton", {
     Animate: animate,
     [type]: true,
-    [`Size${size}`]: true
+    [`Size${size}`]: true,
   });
 
   return (

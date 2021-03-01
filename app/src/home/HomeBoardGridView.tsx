@@ -1,12 +1,12 @@
 import "./HomeBoardGridView.scss";
 import { Board } from "../board/Board";
 import { BoardSupport } from "../board/BoardSupport";
-import {FillSupport} from '../board/FillSupport'
+import { FillSupport } from "../board/FillSupport";
 
 type Props = {
   board: Board;
-  hideFills: boolean
-  size: "Default" | "Large"
+  hideFills: boolean;
+  size: "Default" | "Large";
 };
 
 export const HomeBoardGridView = ({ board, hideFills, size }: Props) => {
@@ -21,7 +21,9 @@ export const HomeBoardGridView = ({ board, hideFills, size }: Props) => {
           key={coordinateKey}
           className="HomeBoardGrid--Cell"
           style={{
-            backgroundColor: hideFills ? '#fff' : FillSupport.toColor(cell.fill),
+            backgroundColor: hideFills
+              ? "#fff"
+              : FillSupport.toColor(cell.fill),
             width: `${cellSize}rem`,
             height: `${cellSize}rem`,
           }}

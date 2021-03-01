@@ -25,7 +25,8 @@
       }
     }
 
-    &--Empty, &--MarkedEmtpy {
+    &--Empty,
+    &--MarkedEmtpy {
       svg path {
         fill: #222;
       }
@@ -40,7 +41,7 @@
     }
 
     &--MarkedEmpty {
-      background-image: url('../assets/cross.svg');
+      background-image: url("../assets/cross.svg");
     }
   }
 }

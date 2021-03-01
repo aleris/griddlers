@@ -1,12 +1,12 @@
-import {Color, Fill, FillEmpty, FillMarkedEmpty} from './Board'
+import { Color, Fill, FillEmpty, FillMarkedEmpty } from "./Board";
 
 export class FillSupport {
   static fillEmptyToMarkedEmpty(fill: Fill) {
-    return fill === FillEmpty ? FillMarkedEmpty : fill
+    return fill === FillEmpty ? FillMarkedEmpty : fill;
   }
 
   static fillMarkedEmptyToEmpty(fill: Fill) {
-    return fill === FillMarkedEmpty ? FillEmpty : fill
+    return fill === FillMarkedEmpty ? FillEmpty : fill;
   }
 
   static isEmptyOrMarkedEmpty(fill: Fill) {
@@ -15,8 +15,8 @@ export class FillSupport {
 
   static toColor(fill: Fill): Color {
     if (fill === undefined || this.isEmptyOrMarkedEmpty(fill)) {
-      return '#fff'
+      return "#fff";
     }
-    return fill as Color
+    return fill as Color;
   }
 }
