@@ -7,21 +7,18 @@ export class BoardMapper {
   static toPersistedGuessed(board: Board): PersistedBoard {
     const guessedFillMatrix = BoardBuilder.mapGuessedToFillMatrix(board);
     return {
-      id: board.id,
+      packId: board.packId,
+      id: board.spec.boardId,
       grid: guessedFillMatrix,
     };
   }
 
   static fromPersisted(board: PersistedBoard): Board {
-    const spec = BoardRegistry.pictureSpecsMapById.get(board.id);
-    if (spec === undefined) {
-      throw new Error(`${board.id} picture spec not found`);
-    }
+    const spec = BoardRegistry.getSpecById(board.packId, board.id);
     return BoardBuilder.buildBoardFromFillMatrix(
-      board.id,
-      board.grid,
-      spec.difficulty,
-      spec.palette
+      board.packId,
+      spec,
+      board.grid
     );
   }
 }

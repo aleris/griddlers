@@ -1,5 +1,6 @@
 import { Board } from "../board/Board";
 import { GameState, GameActionDispatch } from "../GameContext";
+import {PackWithProgress} from '../home/PackWithProgress'
 import { BoardRegistry } from "../registry/BoardRegistry";
 
 export const CompleteBoardActionCode = "CompleteBoard";
@@ -9,7 +10,7 @@ export type CompleteBoardActionType = {
   completed: true;
   nextBoard: Board | null;
   completedBoards: Board[];
-  gameFinished: boolean;
+  pack: PackWithProgress
 };
 
 export const completeBoardReducer = (
@@ -18,7 +19,7 @@ export const completeBoardReducer = (
     completed,
     nextBoard,
     completedBoards,
-    gameFinished,
+    pack
   }: CompleteBoardActionType
 ): GameState => {
   if (state.selectedBoard === null) {
@@ -33,7 +34,7 @@ export const completeBoardReducer = (
     },
     nextBoard,
     completedBoards,
-    gameFinished,
+    selectedPack: pack
   };
 };
 
@@ -43,13 +44,13 @@ export const completeBoardAction = (board: Board) => async (
 ) => {
   const completed = true;
   const nextBoard = await BoardRegistry.completeBoard(board);
-  const completedBoards = await BoardRegistry.getCompleted();
-  const gameFinished = nextBoard === null;
+  const completedBoards = await BoardRegistry.getCompleted(board.packId);
+  const pack = await BoardRegistry.getPackWithProgress(board.packId)
   await dispatch({
     code: CompleteBoardActionCode,
     completed,
     nextBoard,
     completedBoards,
-    gameFinished,
+    pack
   });
 };

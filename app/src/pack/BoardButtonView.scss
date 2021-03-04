@@ -1,0 +1,66 @@
+@import "../style/vars";
+
+$color-button-shadow: rgba(0, 0, 0, 0.2);
+
+.BoardButton {
+
+  button {
+    width: 18vmin;
+    height: 18vmin;
+    padding: 1vmin 1vmin 0 1vmin;
+    margin: 1vmin;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid $color-button-shadow;
+    border-radius: 2vmin;
+    box-shadow: 0 1vmin 0 0 $color-button-shadow;
+    outline: none;
+    transition: all 0.1s ease;
+    will-change: transform;
+
+    &:not(:disabled) {
+      cursor: pointer;
+
+      &:hover {
+        transform: translate3d(0, 0.25vmin, 0);
+        border-color: $color-highlight;
+        box-shadow: 0 0.75vmin 0 0 $color-highlight;
+      }
+
+      &:focus {
+        transform: translate3d(0, 0.25vmin, 0);
+        border-color: $color-highlight;
+        box-shadow: 0 0.75vmin 0 0 $color-highlight;
+      }
+
+      &:active {
+        transform: translate3d(0, 0.5vmin, 0);
+        border-color: $color-highlight;
+        box-shadow: 0 0.5vmin 0 0 $color-highlight;
+      }
+    }
+
+    &:disabled {
+      transform: translate3d(0, 0.5vmin, 0);
+      box-shadow: 0 0.5vmin 0 0 $color-button-shadow;
+      justify-content: center;
+
+      svg {
+        width: 50%;
+        path {
+          fill: $color-button-shadow;
+        }
+      }
+    }
+  }
+
+  &--Highlight {
+    button {
+      box-shadow: 0 1vmin 0 0 $color-primary;
+      border-color: $color-primary;
+    }
+  }
+}

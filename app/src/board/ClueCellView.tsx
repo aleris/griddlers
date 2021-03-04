@@ -12,8 +12,6 @@ export const ClueCellView = ({ clue, cellSize }: Props) => {
     <div
       className="ClueCell"
       style={{
-        width: `${cellSize}rem`,
-        height: `${cellSize}rem`,
         color: clue.fill ?? "none",
       }}
     >

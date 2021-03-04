@@ -7,7 +7,7 @@ export const LoadFromLocalStorageActionCode = "LoadFromLocalStorage";
 
 export type LoadFromLocalStorageActionType = {
   code: typeof LoadFromLocalStorageActionCode;
-  nextBoard: Board;
+  nextBoard: Board | null;
   completedBoards: Board[];
 };
 
@@ -24,12 +24,12 @@ export const loadFromLocalStorageReducer = (
   };
 };
 
-export const loadFromLocalStorageAction = () => async (
+export const loadFromLocalStorageAction = (packId: string) => async (
   state: GameState,
   dispatch: Dispatch<LoadFromLocalStorageActionType>
 ) => {
-  const nextBoard = await BoardRegistry.getNext();
-  const completedBoards = await BoardRegistry.getCompleted();
+  const nextBoard = await BoardRegistry.getNext(state.selectedPack.packId);
+  const completedBoards = await BoardRegistry.getCompleted(state.selectedPack.packId);
   await dispatch({
     code: LoadFromLocalStorageActionCode,
     nextBoard,

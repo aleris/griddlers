@@ -16,7 +16,10 @@ export const PaletteView = ({
   onFillChange,
 }: Props) => {
   return (
-    <div className="Palette">
+    <div className="Palette" style={{
+      gridTemplateColumns: `repeat(${palette.length}, ${cellSize}px)`,
+      gridTemplateRows: `${cellSize}px`
+    }}>
       {palette.map((fill, index) => (
         <PaletteCellView
           key={index}

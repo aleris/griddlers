@@ -1,11 +1,11 @@
-import { PictureSpec } from "../registry/PictureSpec";
+import { BoardSpec } from "../registry/BoardSpec";
 import { FillEmpty } from "./Board";
 import { BoardBuilder } from "./BoardBuilder";
 import { BoardSupport } from "./BoardSupport";
 
 describe("BoardWinChecker", () => {
-  const testSpec: PictureSpec = {
-    id: "test",
+  const testSpec: BoardSpec = {
+    boardId: "test",
     cellSpecs: `
 #.
 ##

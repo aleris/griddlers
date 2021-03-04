@@ -3,6 +3,7 @@ import React from "react";
 import classNames from "../classNames";
 import { IconButton } from "../IconButton";
 import { IconNext } from "../Icons";
+import useWindowSize from '../useWindowSize'
 import { Board, CoordinateKey, Fill } from "./Board";
 import { BoardSupport } from "./BoardSupport";
 import { CluesHRegionView } from "./CluesHRegionView";
@@ -30,9 +31,11 @@ export const BoardView = ({
   const gridHeight = BoardSupport.height(board);
   const cluesHSize = BoardSupport.cluesHSize(board);
   const cluesVSize = BoardSupport.cluesVSize(board);
+  const {windowWidth, windowHeight} = useWindowSize()
+  const windowMin = Math.min(windowWidth, windowHeight)
 
-  const cellSize = 2;
-  const borderWidth = 0.03125;
+  const cellSize = Math.min(48, windowMin / Math.max(gridWidth + cluesHSize, gridHeight + cluesVSize + 2));
+  const borderWidth = 1;
   const fontSize = Math.round(100 * cellSize * 0.75) / 100;
 
   return (
@@ -41,40 +44,21 @@ export const BoardView = ({
         <div
           className="Board--Sheet"
           style={{
-            width: `${(cluesHSize + gridWidth) * cellSize}rem`,
-            fontSize: `${fontSize}rem`,
+            gridTemplateColumns: `${cluesHSize * (cellSize + borderWidth)}px ${gridWidth * (cellSize + borderWidth) + borderWidth}px`,
+            gridTemplateRows: `${cluesVSize * (cellSize + borderWidth)}px ${gridHeight * (cellSize + borderWidth) + borderWidth}px`,
+            fontSize: `${fontSize}px`,
           }}
         >
-          <div
-            style={{
-              width: `${cluesHSize * cellSize}rem`,
-              height: `${cluesVSize * cellSize}rem`,
-            }}
-          >
+          <div>
             <CornerView />
           </div>
-          <div
-            style={{
-              width: `${gridWidth * cellSize}rem`,
-              height: `${cluesVSize * cellSize}rem`,
-            }}
-          >
-            <CluesVRegionView clueLines={board.cluesV} cellSize={cellSize} />
+          <div>
+            <CluesVRegionView board={board} cellSize={cellSize} />
           </div>
-          <div
-            style={{
-              width: `${cluesHSize * cellSize}rem`,
-              height: `${gridHeight * cellSize}rem`,
-            }}
-          >
-            <CluesHRegionView clueLines={board.cluesH} cellSize={cellSize} />
+          <div>
+            <CluesHRegionView board={board} cellSize={cellSize} />
           </div>
-          <div
-            style={{
-              width: `${gridWidth * cellSize}rem`,
-              height: `${gridHeight * cellSize}rem`,
-            }}
-          >
+          <div>
             <GridView
               board={board}
               cellSize={cellSize}
@@ -87,9 +71,8 @@ export const BoardView = ({
             Won: board.completed,
           })}
           style={{
-            width: `${gridWidth * cellSize}rem`,
-            height: `${cellSize + borderWidth}rem`,
-            marginLeft: `${cluesHSize * cellSize}rem`,
+            marginTop: `${Math.round(cellSize / 2)}px`,
+            paddingLeft: `${cluesHSize * (cellSize + borderWidth)}px`,
           }}
         >
           <PaletteView

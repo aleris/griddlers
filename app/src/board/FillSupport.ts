@@ -13,8 +13,8 @@ export class FillSupport {
     return fill === FillEmpty || fill === FillMarkedEmpty;
   }
 
-  static toColor(fill: Fill): Color {
-    if (fill === undefined || this.isEmptyOrMarkedEmpty(fill)) {
+  static toColor(fill: Fill, hide = false): Color {
+    if (fill === undefined || hide || this.isEmptyOrMarkedEmpty(fill)) {
       return "#fff";
     }
     return fill as Color;

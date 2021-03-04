@@ -18,9 +18,7 @@ export const CellView = ({ cell, cellSize, onClick }: Props) => {
         MarkedEmpty: cell.guessed === FillMarkedEmpty,
       })}
       style={{
-        width: `${cellSize}rem`,
-        height: `${cellSize}rem`,
-        backgroundColor: fillColor,
+        backgroundColor: fillColor
       }}
       onClick={onClick}
     />

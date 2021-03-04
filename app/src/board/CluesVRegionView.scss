@@ -1,8 +1,11 @@
 @import "src/style/vars";
 
 .CluesVRegion {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: -$cell-border-width;
-  margin-left: -$cell-border-width;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  column-gap: $cell-border-width;
+  row-gap: $cell-border-width;
+  background-color: $color-clue-border;
+  border: $cell-border-width solid $color-clue-border;
 }

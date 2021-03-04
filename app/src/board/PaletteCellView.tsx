@@ -31,7 +31,6 @@ export const PaletteCellView = ({
   return (
     <div
       className="PaletteCell"
-      style={{ width: `${cellSize}rem`, height: `${cellSize}rem` }}
       onClick={onClick}
     >
       <div

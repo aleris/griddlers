@@ -1,18 +1,27 @@
 import "./CluesVRegionView.scss";
 import React from "react";
-import { ClueLine } from "./Board";
+import {Board, ClueLine} from "./Board";
+import {BoardSupport} from './BoardSupport'
 import { ClueCellView } from "./ClueCellView";
 
 type Props = {
-  clueLines: ClueLine[];
+  board: Board;
   cellSize: number;
 };
 
-export const CluesVRegionView = ({ clueLines, cellSize }: Props) => {
+export const CluesVRegionView = ({ board, cellSize }: Props) => {
+  const clueLines = board.cluesV
   const length = clueLines[0].length;
+  const width = BoardSupport.width(board)
+  const height = BoardSupport.cluesVSize(board)
   const indexes = Array.from({ length }).map((_, index) => index);
   return (
-    <div className="CluesVRegion">
+    <div className="CluesVRegion"
+         style={{
+           gridTemplateColumns: `repeat(${width}, ${cellSize}px)`,
+           gridTemplateRows: `repeat(${height}, ${cellSize}px)`,
+         }}
+    >
       {indexes.map((rowIndex) =>
         clueLines.map((colClueLine, colIndex) => (
           <ClueCellView

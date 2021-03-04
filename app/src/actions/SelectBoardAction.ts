@@ -24,7 +24,8 @@ export const selectBoardAction = (id: string) => async (
   state: GameState,
   dispatch: Dispatch<SelectBoardActionType>
 ) => {
-  const board = await BoardRegistry.getById(id);
+  const board = await BoardRegistry.getCompletedOrCurrentById(state.selectedPack.packId, id);
+  console.log('selectBoardAction', id, board)
   await dispatch({
     code: SelectBoardActionCode,
     board,

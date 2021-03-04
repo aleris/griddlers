@@ -11,8 +11,15 @@ type Props = {
 };
 
 export const GridView = ({ board, cellSize, onCellClick }: Props) => {
+  const width = BoardSupport.width(board);
+  const height = BoardSupport.height(board)
   return (
-    <div className="Grid">
+    <div className="Grid"
+         style={{
+           gridTemplateColumns: `repeat(${width}, ${cellSize}px)`,
+           gridTemplateRows: `repeat(${height}, ${cellSize}px)`,
+         }}
+    >
       {BoardSupport.mapEachCell(board, (cell, coordinateKey) => (
         <CellView
           key={coordinateKey}

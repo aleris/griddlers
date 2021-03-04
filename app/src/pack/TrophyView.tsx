@@ -11,14 +11,14 @@ export const TrophyView = ({ completedPercent }: Props) => {
   return (
     <div className="Trophy">
       <img
-        className="Trophy--Icon"
         src={TrophyBw}
         style={{ clipPath: `inset(0 0 ${completedPercent}% 0)` }}
+        alt="Trophy Completed"
       />
       <img
-        className="Trophy--Icon"
         src={TrophyColor}
         style={{ clipPath: `inset(${100 - completedPercent}% 0 0 0)` }}
+        alt="Trophy Completed"
       />
     </div>
   );

@@ -24,7 +24,7 @@ export class BoardSupport {
   }
 
   static difficultyShown(board: Board): number {
-    return Math.floor(board.difficulty);
+    return Math.floor(board.spec.difficulty);
   }
 
   static mapEachCell<T>(
@@ -66,9 +66,9 @@ export class BoardSupport {
     return true;
   }
 
-  static countMedals(completedBoards: Board[]): number {
-    return completedBoards
-      .map((board) => this.difficultyShown(board))
+  static countMedals(boards: Board[]): number {
+    return boards
+      .map((board) => board.spec.difficulty)
       .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
   }
 }

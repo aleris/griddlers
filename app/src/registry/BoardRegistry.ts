@@ -1,71 +1,131 @@
 import { Board } from "../board/Board";
 import { BoardBuilder } from "../board/BoardBuilder";
-import { BoardSupport } from "../board/BoardSupport";
+import {PackWithProgress} from '../home/PackWithProgress'
 import { BoardMapper } from "../repository/BoardMapper";
 import { CompletedBoardsRepository } from "../repository/CompletedBoardsRepository";
 import { NextBoardRepository } from "../repository/NextBoardRepository";
-import { pictureSpecs } from "./pictureSpecs";
+import {BoardSpec} from './BoardSpec'
+import { PACK_LEVEL_COUNT} from './Pack'
+import {pack1} from './pack1'
+import {pack2} from './pack2'
 
 export class BoardRegistry {
-  static pictureSpecs = pictureSpecs;
-  static pictureSpecsMapById = new Map(
-    pictureSpecs.map((pictureSpec) => [pictureSpec.id, pictureSpec])
-  );
+  static packs = [pack1, pack2];
+  static packsMapById = new Map(BoardRegistry.packs.map(pack => [pack.id, pack]))
+  static pictureSpecsMapById = new Map(BoardRegistry.packs.map(pack =>
+    [pack.id, new Map(pack.pictureSpecs.map(pictureSpec =>
+      [pictureSpec.boardId, pictureSpec]))]
+    )
+  )
 
-  static async getById(id: string): Promise<Board> {
-    const next = await this.getNext();
-    if (next.id === id) {
+  static getPackById(packId: string) {
+    const pack = this.packsMapById.get(packId);
+    if (pack === undefined) {
+      throw new Error(`Pack ${packId} does not exist.`)
+    }
+    return pack
+  }
+
+  static getSpecById(packId: string, boardId: string): BoardSpec {
+    const spec = this.pictureSpecsMapById.get(packId)?.get(boardId)
+    if (spec === undefined) {
+      throw new Error(`Board ${boardId} for pack ${packId} does not exist.`)
+    }
+    return spec
+  }
+
+  static async getCompletedOrCurrentById(packId: string, boardId: string): Promise<Board> {
+    const next = await this.getNext(packId);
+    if (next !== null && next.packId === packId && next.spec.boardId === boardId) {
       return next;
     }
 
-    const completed = await this.getCompleted();
-    const board = completed.find((board) => board.id === id);
+    const completed = await this.getCompleted(packId);
+    const board = completed.find((board) => board.spec.boardId === boardId);
     if (board === undefined) {
-      throw new Error(`${id} board not found`);
+      throw new Error(`${boardId} board not found in pack ${packId}`);
     }
     return board;
   }
 
-  static async getNext(): Promise<Board> {
-    const currentId = await NextBoardRepository.get();
+  static async getNext(packId: string): Promise<Board | null> {
+    const currentId = await NextBoardRepository.get(packId);
     if (currentId === null) {
-      return this.load(pictureSpecs[0].id);
+      return null;
     }
-    return this.load(currentId);
+    return this.load(packId, currentId);
   }
 
-  private static async load(id: string): Promise<Board> {
-    const pictureSpec = this.pictureSpecsMapById.get(id);
-    if (null == pictureSpec) {
-      throw new Error(`${id} picture spec not found`);
-    }
-    return BoardBuilder.buildBoardFromPictureSpec(pictureSpec);
+  private static async load(packId: string, boardId: string): Promise<Board> {
+    const pictureSpec = this.getSpecById(packId, boardId)
+    return BoardBuilder.buildBoardFromPictureSpec(packId, pictureSpec);
   }
 
-  static async getCompleted(): Promise<Board[]> {
-    const persistedList = await CompletedBoardsRepository.list();
+  static async getCompleted(packId: string): Promise<Board[]> {
+    const persistedList = await CompletedBoardsRepository.listBoardsForPack(packId);
     return persistedList
       .map((persistedBoard) => BoardMapper.fromPersisted(persistedBoard))
-      .sort((a, b) => b.difficulty - a.difficulty);
+      .sort((a, b) => a.spec.positionInPack - b.spec.positionInPack);
   }
 
   static async completeBoard(filledBoard: Board): Promise<Board | null> {
     const persistedBoardWithGuessed = BoardMapper.toPersistedGuessed(
       filledBoard
     );
-    await CompletedBoardsRepository.set(persistedBoardWithGuessed);
-    return await this.next();
+    await CompletedBoardsRepository.setBoard(persistedBoardWithGuessed);
+    return await this.next(filledBoard.packId);
   }
 
-  private static async next(): Promise<Board | null> {
-    const completedIdsSet = new Set(await CompletedBoardsRepository.listIds());
-    for (const spec of this.pictureSpecs) {
-      if (!completedIdsSet.has(spec.id)) {
-        const board = BoardBuilder.buildBoardFromPictureSpec(spec);
-        await NextBoardRepository.set(board.id);
+  static async getPacksWithProgress(): Promise<PackWithProgress[]> {
+    const ids = this.packs.map(pack => pack.id);
+    return Promise.all(
+      ids.map(async (packId): Promise<PackWithProgress> => await this.getPackWithProgress(packId))
+    );
+  }
+
+  static async getPackWithProgress(packId: string): Promise<PackWithProgress> {
+    const boardIdsForPack = await CompletedBoardsRepository.listBoardIdsForPack(packId)
+    const completedMedals = boardIdsForPack
+      .map(boardId => this.getSpecById(packId, boardId).difficulty)
+      .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+    const totalMedals = BoardRegistry.getSpecsForPack(packId)
+      .map(board => board.difficulty)
+      .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+    const coverBoard = BoardBuilder.buildBoardFromPictureSpec(packId, this.getCoverBoard(packId))
+    const completedPercent = Math.round((completedMedals * 100) / totalMedals);
+    return {
+      packId,
+      coverBoard,
+      completedMedals,
+      totalMedals,
+      completedPercent
+    }
+  }
+
+  private static getCoverBoard(packId: string) {
+    const pack = this.getPackById(packId)
+    return pack.pictureSpecs[(6 + pack.position) % PACK_LEVEL_COUNT]
+  }
+
+  static getSpecsForPack(packId: string) {
+    const specs = this.packsMapById.get(packId)?.pictureSpecs
+    if (specs === undefined) {
+      throw new Error(`Specs for pack ${packId} do not exist.`)
+    }
+    return specs
+  }
+
+  static async next(packId: string): Promise<Board | null> {
+    const completedIdsSet = new Set(await CompletedBoardsRepository.listBoardIdsForPack(packId));
+    const specs = this.getSpecsForPack(packId)
+    for (const spec of specs) {
+      if (!completedIdsSet.has(spec.boardId)) {
+        const board = BoardBuilder.buildBoardFromPictureSpec(packId, spec);
+        await NextBoardRepository.set(packId, board.spec.boardId);
         return board;
       }
     }
+    await NextBoardRepository.set(packId, null);
     return null;
   }
 }

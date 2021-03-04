@@ -1,0 +1,27 @@
+.Progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &--Trophy {
+    display: block;
+    margin: auto;
+  }
+
+  &--Medal {
+    width: 3vmin;
+    margin-left: 1vmin;
+    img {
+      display: block;
+      margin: auto;
+    }
+  }
+
+  &--Count {
+    font-size: 3vmin;
+    line-height: 5vmin;
+    height: 5vmin;
+    font-weight: bold;
+    color: #444;
+  }
+}

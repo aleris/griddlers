@@ -1,0 +1,15 @@
+.Difficulty {
+  display: flex;
+  height: 6vmin;
+  justify-content: center;
+  align-items: center;
+
+  &--Cell {
+    width: 3vmin;
+
+    img {
+      display:block;
+      margin:auto;
+    }
+  }
+}

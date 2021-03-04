@@ -1,0 +1,18 @@
+@import "../style/vars";
+
+.PackBoard {
+
+  &--Grid {
+    height: 10vmin;
+    width: 10vmin;
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &--Difficulty {
+
+  }
+
+}

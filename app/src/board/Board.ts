@@ -1,3 +1,5 @@
+import {BoardSpec} from '../registry/BoardSpec'
+
 type Empty = "";
 type MarkedEmpty = "X";
 
@@ -29,11 +31,11 @@ export type ClueLine = Clue[];
 export type Palette = Fill[];
 
 export type Board = {
-  id: string;
+  packId: string,
+  spec: BoardSpec,
   cluesV: ClueLine[];
   cluesH: ClueLine[];
   grid: Grid;
-  difficulty: number;
   palette: Palette;
   currentPaletteFill: Fill;
   completed: boolean;

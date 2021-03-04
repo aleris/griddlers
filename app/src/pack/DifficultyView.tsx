@@ -7,16 +7,17 @@ type Props = {
   rating: number;
   completed: boolean;
 };
+
 export const DifficultyView = ({ rating, completed }: Props) => (
   <div className="Difficulty">
     {Array.from({ length: rating }).map((_, index) => (
-      <span key={index} className="Difficulty--Cell">
+      <div key={index} className="Difficulty--Cell">
         {completed ? (
           <img src={MedalColor} alt="" />
         ) : (
           <img src={MedalBw} alt="" />
         )}
-      </span>
+      </div>
     ))}
   </div>
 );

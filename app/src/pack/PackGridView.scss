@@ -1,0 +1,16 @@
+@import "../style/vars";
+
+.PackGrid{
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  row-gap: 1px;
+  column-gap: 1px;
+  background-color: $color-cell-border;
+  border: 1px solid $color-cell-border;
+
+  &--Cell {
+    width: 100%;
+    height: 100%;
+  }
+}

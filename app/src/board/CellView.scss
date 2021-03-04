@@ -2,7 +2,9 @@
 
 .Cell {
   cursor: pointer;
-  box-shadow: 0 0 0 $cell-border-width $color-cell-border;
+  width: 100%;
+  height: 100%;
+  transition: all 0.2s ease;
 
   &--MarkedEmpty {
     background-image: url("../assets/cross.svg");

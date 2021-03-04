@@ -1,20 +1,73 @@
+@import "../style/vars";
+
 .Home {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 
-  &--Current {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+  &--Title {
+    margin-bottom: 5vmin;
   }
 
-  .Home--Achievements {
-    margin-bottom: 1rem;
+  &--Packs {
+    width: 100vw;
+    overflow-x: scroll;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    padding: 2vmin;
+
+    &::before, &::after {
+      content: '';
+      margin: auto;
+    }
   }
 
-  &--Completed {
-    margin-bottom: 1rem;
+  &--Pack {
+    display: inline-block;
+    animation: slide-in-left 0.5s ease-out both;
+    will-change: transform;
+
+    button {
+      transform: skewX(-30deg);
+      border: none;
+      outline: none;
+      height: 20vmin;
+      width: 20vmin;
+      margin-left: 5vmin;
+      background-image: linear-gradient(to right, #ECE9E6 0%, #FFFFFF 51%, #ECE9E6 100%);
+      transition: 0.5s;
+      background-size: 200% auto;
+      box-shadow: 0 0 1vmin 0 rgba(0, 0, 0, 0.2);
+      display: block;
+      cursor: pointer;
+      border-radius: 1vmin;
+
+      &:hover {
+        background-position: right center;
+      }
+
+      & > div {
+        transform: skewX(30deg);
+      }
+    }
+
+    &--Content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+    }
+
+    &--Grid {
+      margin-left: 3vmin;
+      margin-bottom: 2vmin;
+    }
+
+    &--Trophy {
+      margin-left: -7vmin;
+    }
   }
 }

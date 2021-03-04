@@ -10,11 +10,11 @@ export class NextBoardRepository {
     storeName: NextBoardRepository.STORE_NAME,
   });
 
-  static async set(boardId: string) {
-    return await this.store.setItem("board", boardId);
+  static async set(packId: string, boardId: string | null) {
+    return await this.store.setItem(packId, boardId);
   }
 
-  static async get(): Promise<string | null> {
-    return (await this.store.getItem("board")) as string | null;
+  static async get(packId: string): Promise<string | null> {
+    return (await this.store.getItem(packId)) as string | null;
   }
 }

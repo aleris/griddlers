@@ -1,21 +1,21 @@
-import { PaletteSpec, PictureSpec } from "../registry/PictureSpec";
+import { BoardSpec } from "../registry/BoardSpec";
+import {PaletteSpec} from '../registry/PaletteSpec'
 import { Board, Fill, FillEmpty, Grid } from "./Board";
 import { BoardClues } from "./BoardClues";
 import { BoardSupport } from "./BoardSupport";
 import { FillSupport } from "./FillSupport";
 
 export class BoardBuilder {
-  static buildBoardFromPictureSpec(pictureSpec: PictureSpec): Board {
-    const fillMatrix = this.buildFillMatrixFromPictureSpec(pictureSpec);
+  static buildBoardFromPictureSpec(packId: string, boardSpec: BoardSpec): Board {
+    const fillMatrix = this.buildFillMatrixFromPictureSpec(boardSpec);
     return this.buildBoardFromFillMatrix(
-      pictureSpec.id,
-      fillMatrix,
-      pictureSpec.difficulty,
-      pictureSpec.palette
+      packId,
+      boardSpec,
+      fillMatrix
     );
   }
 
-  static buildGridFromPictureSpec(pictureSpec: PictureSpec): Grid {
+  static buildGridFromPictureSpec(pictureSpec: BoardSpec): Grid {
     const fillMatrix = this.buildFillMatrixFromPictureSpec(pictureSpec);
     return this.buildGridFromFillMatrix(fillMatrix);
   }
@@ -23,7 +23,7 @@ export class BoardBuilder {
   private static buildFillMatrixFromPictureSpec({
     cellSpecs,
     palette,
-  }: PictureSpec): Fill[][] {
+  }: BoardSpec): Fill[][] {
     const rows = cellSpecs.trim().split("\n");
     const grid: Fill[][] = [];
     for (let ri = 0; ri !== rows.length; ri++) {
@@ -38,22 +38,21 @@ export class BoardBuilder {
   }
 
   static buildBoardFromFillMatrix(
-    id: string,
-    fillMatrix: Fill[][],
-    difficulty: number,
-    paletteSpec: PaletteSpec
+    packId: string,
+    spec: BoardSpec,
+    fillMatrix: Fill[][]
   ): Board {
     const grid: Grid = this.buildGridFromFillMatrix(fillMatrix);
     const cluesV = BoardClues.extractCluesV(fillMatrix);
     const cluesH = BoardClues.extractCluesH(fillMatrix);
-    const palette = this.buildPaletteFromSpec(paletteSpec);
+    const palette = this.buildPaletteFromSpec(spec.palette);
     const currentPaletteFill = this.getFirstColorFill(palette);
     return {
-      id,
+      packId,
+      spec,
       cluesV,
       cluesH,
       grid,
-      difficulty,
       palette,
       currentPaletteFill,
       completed: false,

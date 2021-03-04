@@ -4,15 +4,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  //animation: scale-in-center 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+  will-change: transform;
+  animation: slide-in-top-left-rotate 0.5s ease-out both;
 
   &--Sheet {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
   }
 
   &--Palette {
-    margin-top: 1rem;
 
     &--Won {
       animation: scale-out-center 0.25s cubic-bezier(0.55, 0.085, 0.68, 0.53)
@@ -22,7 +21,7 @@
 
   &--Next {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-top: -2rem;
     transform: translateX(-1000px);
