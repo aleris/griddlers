@@ -1,10 +1,11 @@
-import {FillEmpty} from '../board/Board'
-import {Pack} from './Pack'
+import { FillColors, FillEmpty } from "../board/Board";
+import { Pack } from "./Pack";
 
 export const pack1: Pack = {
   position: 1,
   id: "4D049856-EE42-460C-BC7C-97CB66128417",
-  pictureSpecs: [
+  coverBoardIndex: 5,
+  boardSpecs: [
     {
       positionInPack: 1,
       boardId: "A0215AAF-1E0C-4BC3-90A1-8C87BE1E3853",
@@ -14,9 +15,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 2,
@@ -26,9 +28,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 3,
@@ -39,9 +42,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 4,
@@ -52,9 +56,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 5,
@@ -66,9 +71,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 6,
@@ -79,9 +85,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 7,
@@ -92,9 +99,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 8,
@@ -106,9 +114,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 9,
@@ -120,9 +129,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 10,
@@ -134,9 +144,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 11,
@@ -148,9 +159,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 12,
@@ -164,9 +176,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 1,
+      withHiddenColors: false,
     },
     {
       positionInPack: 13,
@@ -180,9 +193,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 2,
+      withHiddenColors: false,
     },
     {
       positionInPack: 14,
@@ -196,9 +210,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 2,
+      withHiddenColors: false,
     },
     {
       positionInPack: 15,
@@ -213,9 +228,10 @@ export const pack1: Pack = {
 `,
       palette: {
         ".": FillEmpty,
-        "#": "#444",
+        "#": FillColors.Black,
       },
       difficulty: 2,
+      withHiddenColors: false,
     },
-  ]
-}
+  ],
+};

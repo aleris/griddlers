@@ -1,0 +1,23 @@
+.EditorPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &--Grid {
+    display: flex;
+  }
+
+  &--Palette {
+  }
+
+  &--Buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &--Generated {
+    pre {
+      text-align: center;
+    }
+  }
+}

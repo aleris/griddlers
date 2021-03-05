@@ -16,16 +16,18 @@ export const PaletteView = ({
   onFillChange,
 }: Props) => {
   return (
-    <div className="Palette" style={{
-      gridTemplateColumns: `repeat(${palette.length}, ${cellSize}px)`,
-      gridTemplateRows: `${cellSize}px`
-    }}>
+    <div
+      className="Palette"
+      style={{
+        gridTemplateColumns: `repeat(${palette.length}, ${cellSize}px)`,
+        gridTemplateRows: `${cellSize}px`,
+      }}
+    >
       {palette.map((fill, index) => (
         <PaletteCellView
           key={index}
           fill={fill}
           checked={fill === currentFill}
-          cellSize={cellSize}
           onClick={() => onFillChange(fill)}
         />
       ))}

@@ -2,13 +2,14 @@ import "./BoardView.scss";
 import React from "react";
 import classNames from "../classNames";
 import { IconButton } from "../IconButton";
-import { IconNext } from "../Icons";
-import useWindowSize from '../useWindowSize'
-import { Board, CoordinateKey, Fill } from "./Board";
+import NextSvg from "../assets/next.svg";
+import useWindowSize from "../useWindowSize";
+import { Board, Fill, GridPosition } from "./Board";
 import { BoardSupport } from "./BoardSupport";
 import { CluesHRegionView } from "./CluesHRegionView";
 import { CluesVRegionView } from "./CluesVRegionView";
 import { CornerView } from "./CornerView";
+import { FillSupport } from "./FillSupport";
 import { GridView } from "./GridView";
 import { PaletteView } from "./PaletteView";
 import { SuccessAnimationContainer } from "./SuccessAnimationContainerView";
@@ -16,7 +17,8 @@ import MedalColor from "../assets/medal-color.svg";
 
 type Props = {
   board: Board;
-  onCellClick: (coordinateKey: CoordinateKey) => void;
+  onCellClick: (position: GridPosition) => void;
+  onCellZoneSelect: (from: GridPosition, to: GridPosition) => void;
   onPaletteFillChange: (fill: Fill) => void;
   onNextClick: () => void;
 };
@@ -24,6 +26,7 @@ type Props = {
 export const BoardView = ({
   board,
   onCellClick,
+  onCellZoneSelect,
   onPaletteFillChange,
   onNextClick,
 }: Props) => {
@@ -31,10 +34,13 @@ export const BoardView = ({
   const gridHeight = BoardSupport.height(board);
   const cluesHSize = BoardSupport.cluesHSize(board);
   const cluesVSize = BoardSupport.cluesVSize(board);
-  const {windowWidth, windowHeight} = useWindowSize()
-  const windowMin = Math.min(windowWidth, windowHeight)
+  const { windowWidth, windowHeight } = useWindowSize();
+  const windowMin = Math.min(windowWidth, windowHeight);
 
-  const cellSize = Math.min(48, windowMin / Math.max(gridWidth + cluesHSize, gridHeight + cluesVSize + 2));
+  const cellSize = Math.min(
+    32,
+    windowMin / Math.max(gridWidth + cluesHSize, gridHeight + cluesVSize + 2)
+  );
   const borderWidth = 1;
   const fontSize = Math.round(100 * cellSize * 0.75) / 100;
 
@@ -44,8 +50,12 @@ export const BoardView = ({
         <div
           className="Board--Sheet"
           style={{
-            gridTemplateColumns: `${cluesHSize * (cellSize + borderWidth)}px ${gridWidth * (cellSize + borderWidth) + borderWidth}px`,
-            gridTemplateRows: `${cluesVSize * (cellSize + borderWidth)}px ${gridHeight * (cellSize + borderWidth) + borderWidth}px`,
+            gridTemplateColumns: `${cluesHSize * (cellSize + borderWidth)}px ${
+              gridWidth * (cellSize + borderWidth) + borderWidth
+            }px`,
+            gridTemplateRows: `${cluesVSize * (cellSize + borderWidth)}px ${
+              gridHeight * (cellSize + borderWidth) + borderWidth
+            }px`,
             fontSize: `${fontSize}px`,
           }}
         >
@@ -63,6 +73,10 @@ export const BoardView = ({
               board={board}
               cellSize={cellSize}
               onCellClick={onCellClick}
+              selectionBackgroundColor={FillSupport.toColor(
+                board.currentPaletteFill
+              )}
+              onCellZoneSelect={onCellZoneSelect}
             />
           </div>
         </div>
@@ -88,23 +102,21 @@ export const BoardView = ({
           })}
         >
           <div className="Medals">
-            {Array.from({ length: BoardSupport.difficultyShown(board) }).map(
-              (_, index) => (
-                <img
-                  key={index}
-                  src={MedalColor}
-                  style={{ animationDelay: `${1.25 + index * 0.1}s` }}
-                  alt={`Medal ${index + 1}`}
-                />
-              )
-            )}
+            {Array.from({ length: board.spec.difficulty }).map((_, index) => (
+              <img
+                key={index}
+                src={MedalColor}
+                style={{ animationDelay: `${1.25 + index * 0.1}s` }}
+                alt={`Medal ${index + 1}`}
+              />
+            ))}
           </div>
           <div className="Button">
             <IconButton
               type="Primary"
               disabled={!board.completed}
-              icon={IconNext}
-              onAnimationFinished={onNextClick}
+              icon={<img src={NextSvg} alt="Continue" />}
+              onClick={onNextClick}
             />
           </div>
         </div>

@@ -15,27 +15,27 @@ import {
   fillCellReducer,
 } from "./actions/FillCellAction";
 import {
-  loadFromLocalStorageAction,
-  LoadFromLocalStorageActionCode,
-  LoadFromLocalStorageActionType,
-  loadFromLocalStorageReducer,
-} from "./actions/LoadFromLocalStorageAction";
-import {LoadPacksActionCode, LoadPacksActionType, loadPacksReducer} from './actions/LoadPacksAction'
+  LoadPacksActionCode,
+  LoadPacksActionType,
+  loadPacksReducer,
+} from "./actions/LoadPacksAction";
 import {
   SelectBoardActionCode,
   SelectBoardActionType,
   selectBoardReducer,
 } from "./actions/SelectBoardAction";
-import {SelectPackActionCode, SelectPackActionType, selectPackReducer} from './actions/SelectPackAction'
+import {
+  SelectPackActionCode,
+  SelectPackActionType,
+  selectPackReducer,
+} from "./actions/SelectPackAction";
 import { Board } from "./board/Board";
 import { BoardBuilder } from "./board/BoardBuilder";
-import {PackWithProgress} from './home/PackWithProgress'
+import { PackWithProgress } from "./home/PackWithProgress";
 import { BoardRegistry } from "./registry/BoardRegistry";
-import {Pack} from './registry/Pack'
 
 export type GameActionType =
   | LoadPacksActionType
-  | LoadFromLocalStorageActionType
   | SelectPackActionType
   | SelectBoardActionType
   | ChangePaletteFillActionType
@@ -43,7 +43,7 @@ export type GameActionType =
   | CompleteBoardActionType;
 
 export type GameState = {
-  selectedPack: PackWithProgress;
+  selectedPack: PackWithProgress | null;
   selectedBoard: Board | null;
   nextBoard: Board | null;
   completedBoards: Board[];
@@ -59,13 +59,13 @@ export type GameActionDispatch = Dispatch<GameAction | GameActionType>;
 const dispatchWithGameAction = (
   state: GameState,
   dispatch: Dispatch<GameActionType>
-) => (action: GameAction | GameActionType) => {
+) => async (action: GameAction | GameActionType) => {
   if (action instanceof Function) {
     console.log("action", action.name, "->");
-    action(state, dispatchWithGameAction(state, dispatch));
+    await action(state, dispatchWithGameAction(state, dispatch));
   } else {
     console.log("action", action.code, action);
-    dispatch(action);
+    await dispatch(action);
   }
 };
 
@@ -86,9 +86,6 @@ const gameReducer = (state: GameState, action: GameActionType): GameState => {
     case ChangePaletteFillActionCode:
       return changePaletteFillReducer(state, action);
 
-    case LoadFromLocalStorageActionCode:
-      return loadFromLocalStorageReducer(state, action);
-
     case SelectBoardActionCode:
       return selectBoardReducer(state, action);
 
@@ -103,18 +100,18 @@ const gameReducer = (state: GameState, action: GameActionType): GameState => {
   }
 };
 
-const firstPack = BoardRegistry.packs[0]
-const firstBoard: Board = BoardBuilder.buildBoardFromPictureSpec(
+const firstPack = BoardRegistry.packs[0];
+const firstBoard: Board = BoardBuilder.buildBoardFromSpec(
   firstPack.id,
-  firstPack.pictureSpecs[0]
+  firstPack.boardSpecs[0]
 );
 
 const initialState: GameState = {
-  selectedPack: { packId: firstPack.id, coverBoard: firstBoard, completedPercent: 0, completedMedals: 0, totalMedals: 1 },
+  selectedPack: null,
   selectedBoard: null,
   nextBoard: firstBoard,
   completedBoards: [],
-  packs: []
+  packs: [],
 };
 
 export const GameContext = createContext<Context>({

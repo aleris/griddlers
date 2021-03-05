@@ -1,11 +1,11 @@
 import "./ProgressView.scss";
 import React from "react";
-import {PackWithProgress} from '../home/PackWithProgress'
+import { PackWithProgress } from "../home/PackWithProgress";
 import { TrophyView } from "./TrophyView";
-import MedalColor from "../assets/medal-color.svg"
+import MedalColor from "../assets/medal-color.svg";
 
 type Props = {
-  pack: PackWithProgress
+  pack: PackWithProgress;
 };
 
 export const ProgressView = ({ pack }: Props) => {
@@ -17,7 +17,9 @@ export const ProgressView = ({ pack }: Props) => {
       <div className="Progress--Medal">
         <img src={MedalColor} alt="Medals" />
       </div>
-      <div className="Progress--Count">{pack.completedMedals}/{pack.totalMedals}</div>
+      <div className="Progress--Count">
+        {pack.completedMedals}/{pack.totalMedals}
+      </div>
     </div>
   ) : null;
 };

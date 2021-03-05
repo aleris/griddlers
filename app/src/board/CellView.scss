@@ -5,12 +5,34 @@
   width: 100%;
   height: 100%;
   transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
 
   &--MarkedEmpty {
     background-image: url("../assets/cross.svg");
   }
 
+  &--Selected {
+    background-color: $color-highlight !important;
+  }
+
   &:hover {
-    filter: brightness(80%);
+    //filter: brightness(80%);
+    box-shadow: inset 0 0 8px 0 $color-highlight;
+  }
+
+  &--SelectionTip {
+    position: absolute;
+    border: 1px solid $color-highlight;
+    display: block;
+    background-color: #fff;
+    padding: 0.15rem 0.25rem;
+    text-align: center;
+    font-size: 0.75rem;
+    border-radius: 1rem;
+    color: #222;
+    z-index: 1010;
+    top: 110%;
+    left: 110%;
   }
 }

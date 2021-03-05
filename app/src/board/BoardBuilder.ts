@@ -1,26 +1,22 @@
 import { BoardSpec } from "../registry/BoardSpec";
-import {PaletteSpec} from '../registry/PaletteSpec'
-import { Board, Fill, FillEmpty, Grid } from "./Board";
+import { PaletteSpec } from "../registry/PaletteSpec";
+import { Board, Fill, FillEmpty, FillHiddenBlock, Grid } from "./Board";
 import { BoardClues } from "./BoardClues";
 import { BoardSupport } from "./BoardSupport";
 import { FillSupport } from "./FillSupport";
 
 export class BoardBuilder {
-  static buildBoardFromPictureSpec(packId: string, boardSpec: BoardSpec): Board {
-    const fillMatrix = this.buildFillMatrixFromPictureSpec(boardSpec);
-    return this.buildBoardFromFillMatrix(
-      packId,
-      boardSpec,
-      fillMatrix
-    );
+  static buildBoardFromSpec(packId: string, boardSpec: BoardSpec): Board {
+    const fillMatrix = this.buildFillMatrixFromSpec(boardSpec);
+    return this.buildBoardFromFillMatrix(packId, boardSpec, fillMatrix);
   }
 
-  static buildGridFromPictureSpec(pictureSpec: BoardSpec): Grid {
-    const fillMatrix = this.buildFillMatrixFromPictureSpec(pictureSpec);
+  static buildGridFromPictureSpec(boardSpec: BoardSpec): Grid {
+    const fillMatrix = this.buildFillMatrixFromSpec(boardSpec);
     return this.buildGridFromFillMatrix(fillMatrix);
   }
 
-  private static buildFillMatrixFromPictureSpec({
+  private static buildFillMatrixFromSpec({
     cellSpecs,
     palette,
   }: BoardSpec): Fill[][] {
@@ -39,17 +35,26 @@ export class BoardBuilder {
 
   static buildBoardFromFillMatrix(
     packId: string,
-    spec: BoardSpec,
+    boardSpec: BoardSpec,
     fillMatrix: Fill[][]
   ): Board {
     const grid: Grid = this.buildGridFromFillMatrix(fillMatrix);
-    const cluesV = BoardClues.extractCluesV(fillMatrix);
-    const cluesH = BoardClues.extractCluesH(fillMatrix);
-    const palette = this.buildPaletteFromSpec(spec.palette);
+    const cluesV = BoardClues.extractCluesV(
+      fillMatrix,
+      boardSpec.withHiddenColors
+    );
+    const cluesH = BoardClues.extractCluesH(
+      fillMatrix,
+      boardSpec.withHiddenColors
+    );
+    const palette = this.buildPaletteFromSpec(
+      boardSpec.palette,
+      boardSpec.withHiddenColors
+    );
     const currentPaletteFill = this.getFirstColorFill(palette);
     return {
       packId,
-      spec,
+      spec: boardSpec,
       cluesV,
       cluesH,
       grid,
@@ -59,28 +64,42 @@ export class BoardBuilder {
     };
   }
 
-  static mapGuessedToFillMatrix(board: Board) {
+  static mapToFillMatrix(
+    board: Board,
+    fromGuessed: boolean,
+    hideColors = false
+  ) {
     const fillMatrix = new Array<Array<Fill>>();
     Array.from({ length: BoardSupport.height(board) }).forEach(() =>
       fillMatrix.push(new Array<Fill>())
     );
     BoardSupport.mapEachCell(
       board,
-      (cell, coordinateKey, rowIndex, colIndex) =>
-        (fillMatrix[rowIndex][colIndex] = FillSupport.fillMarkedEmptyToEmpty(
-          cell.guessed
-        ))
+      (cell, coordinateKey, rowIndex, colIndex) => {
+        const fill = fromGuessed ? cell.guessed : cell.fill;
+        const hiddenFill = hideColors ? FillSupport.hideColor(fill) : fill;
+        return (fillMatrix[rowIndex][
+          colIndex
+        ] = FillSupport.fillMarkedEmptyToEmpty(hiddenFill));
+      }
     );
     return fillMatrix;
   }
 
-  private static buildPaletteFromSpec(paletteSpec: PaletteSpec) {
-    return (Object.values(paletteSpec) as Fill[]).map((fill) =>
+  static buildPaletteFromSpec(
+    paletteSpec: PaletteSpec,
+    withHiddenColors: boolean
+  ) {
+    const palette = (Object.values(paletteSpec) as Fill[]).map((fill) =>
       FillSupport.fillEmptyToMarkedEmpty(fill)
     );
+    if (withHiddenColors) {
+      return [palette[0], FillHiddenBlock];
+    }
+    return palette;
   }
 
-  private static getFirstColorFill(palette: (string | null)[]) {
+  static getFirstColorFill(palette: (string | null)[]): Fill {
     return (
       palette.filter((fill) => !FillSupport.isEmptyOrMarkedEmpty(fill))[0] ??
       palette[0] ??

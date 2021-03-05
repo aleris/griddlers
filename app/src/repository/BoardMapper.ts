@@ -5,7 +5,7 @@ import { PersistedBoard } from "./PersistedBoard";
 
 export class BoardMapper {
   static toPersistedGuessed(board: Board): PersistedBoard {
-    const guessedFillMatrix = BoardBuilder.mapGuessedToFillMatrix(board);
+    const guessedFillMatrix = BoardBuilder.mapToFillMatrix(board, true);
     return {
       packId: board.packId,
       id: board.spec.boardId,

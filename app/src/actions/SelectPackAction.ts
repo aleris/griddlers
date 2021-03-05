@@ -1,9 +1,8 @@
 import { Dispatch } from "react";
 import { Board } from "../board/Board";
 import { GameState } from "../GameContext";
-import {PackWithProgress} from '../home/PackWithProgress'
+import { PackWithProgress } from "../home/PackWithProgress";
 import { BoardRegistry } from "../registry/BoardRegistry";
-import {Pack} from '../registry/Pack'
 
 export const SelectPackActionCode = "SelectPack";
 
@@ -22,7 +21,7 @@ export const selectPackReducer = (
     ...state,
     selectedPack: pack,
     nextBoard,
-    completedBoards
+    completedBoards,
   };
 };
 
@@ -30,13 +29,13 @@ export const selectPackAction = (packId: string) => async (
   state: GameState,
   dispatch: Dispatch<SelectPackActionType>
 ) => {
-  const pack = await BoardRegistry.getPackWithProgress(packId)
+  const pack = await BoardRegistry.getPackWithProgress(packId);
   const completedBoards = await BoardRegistry.getCompleted(packId);
   const nextBoard = await BoardRegistry.next(packId);
   await dispatch({
     code: SelectPackActionCode,
     pack,
     completedBoards,
-    nextBoard
+    nextBoard,
   });
 };

@@ -1,6 +1,7 @@
-import { Board, Cell, CoordinateKey } from "./Board";
+import { Board, Cell, CoordinateKey, Fill, Grid, GridPosition } from "./Board";
 import { BoardBuilder } from "./BoardBuilder";
 import { BoardClues } from "./BoardClues";
+import { FillSupport } from "./FillSupport";
 
 export class BoardSupport {
   static gridCoordinate(rowIndex: number, colIndex: number): CoordinateKey {
@@ -21,10 +22,6 @@ export class BoardSupport {
 
   static cluesHSize(board: Board): number {
     return board.cluesH[0].length;
-  }
-
-  static difficultyShown(board: Board): number {
-    return Math.floor(board.spec.difficulty);
   }
 
   static mapEachCell<T>(
@@ -54,12 +51,18 @@ export class BoardSupport {
   }
 
   static isCompleted(board: Board) {
-    const guessedFillMatrix = BoardBuilder.mapGuessedToFillMatrix(board);
-    const cluesV = BoardClues.extractCluesV(guessedFillMatrix);
+    const guessedFillMatrix = BoardBuilder.mapToFillMatrix(board, true);
+    const cluesV = BoardClues.extractCluesV(
+      guessedFillMatrix,
+      board.spec.withHiddenColors
+    );
     if (!BoardClues.equals(cluesV, board.cluesV)) {
       return false;
     }
-    const cluesH = BoardClues.extractCluesH(guessedFillMatrix);
+    const cluesH = BoardClues.extractCluesH(
+      guessedFillMatrix,
+      board.spec.withHiddenColors
+    );
     if (!BoardClues.equals(cluesH, board.cluesH)) {
       return false;
     }
@@ -70,5 +73,70 @@ export class BoardSupport {
     return boards
       .map((board) => board.spec.difficulty)
       .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+  }
+
+  static replaceGridZone(
+    grid: Grid,
+    from: GridPosition,
+    to: GridPosition,
+    fill?: Fill,
+    guessed?: Fill
+  ) {
+    const newGrid = { ...grid };
+    Array.from({ length: to.rowIndex - from.rowIndex + 1 }).forEach(
+      (_, rowIndex) =>
+        Array.from({ length: to.colIndex - from.colIndex + 1 }).forEach(
+          (_, colIndex) => {
+            const key = BoardSupport.gridCoordinate(
+              from.rowIndex + rowIndex,
+              from.colIndex + colIndex
+            );
+            if (fill !== undefined) {
+              newGrid[key].fill = fill;
+            }
+            if (guessed !== undefined) {
+              newGrid[key].guessed = guessed;
+            }
+          }
+        )
+    );
+    return newGrid;
+  }
+
+  static revealHiddenColors(board: Board): Board {
+    const fillMatrix = BoardBuilder.mapToFillMatrix(board, false);
+    const guessMatrix = BoardBuilder.mapToFillMatrix(board, true);
+
+    if (FillSupport.matricesEquals(fillMatrix, guessMatrix, true)) {
+      return this.mapGuessedFromFillMatrix(board, fillMatrix);
+    }
+
+    const fillMatrixFlippedH = FillSupport.flipMatrixH(fillMatrix);
+    if (FillSupport.matricesEquals(fillMatrixFlippedH, guessMatrix, true)) {
+      return this.mapGuessedFromFillMatrix(board, fillMatrixFlippedH);
+    }
+
+    const fillMatrixFlippedV = FillSupport.flipMatrixV(fillMatrix);
+    if (FillSupport.matricesEquals(fillMatrixFlippedV, guessMatrix, true)) {
+      return this.mapGuessedFromFillMatrix(board, fillMatrixFlippedV);
+    }
+
+    const fillMatrixFlippedVH = FillSupport.flipMatrixV(fillMatrixFlippedH);
+    if (FillSupport.matricesEquals(fillMatrixFlippedVH, guessMatrix, true)) {
+      return this.mapGuessedFromFillMatrix(board, fillMatrixFlippedVH);
+    }
+
+    return board;
+  }
+
+  private static mapGuessedFromFillMatrix(
+    board: Board,
+    fillMatrix: Fill[][]
+  ): Board {
+    const newGrid = { ...board.grid };
+    this.mapEachCell(board, (cell, coordinateKey, rowIndex, colIndex) => {
+      newGrid[coordinateKey].guessed = fillMatrix[rowIndex][colIndex];
+    });
+    return { ...board, grid: newGrid };
   }
 }

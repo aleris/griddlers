@@ -1,3 +1,4 @@
+import { default as firebase } from "firebase/app";
 import { Dispatch } from "react";
 import { Board } from "../board/Board";
 import { GameState } from "../GameContext";
@@ -24,8 +25,20 @@ export const selectBoardAction = (id: string) => async (
   state: GameState,
   dispatch: Dispatch<SelectBoardActionType>
 ) => {
-  const board = await BoardRegistry.getCompletedOrCurrentById(state.selectedPack.packId, id);
-  console.log('selectBoardAction', id, board)
+  if (state.selectedPack === null) {
+    console.error("selectBoardAction selectedPack is null");
+    return;
+  }
+  const board = await BoardRegistry.getCompletedOrCurrentById(
+    state.selectedPack.packId,
+    id
+  );
+  firebase
+    .analytics()
+    .logEvent("select_board", {
+      boardId: board.spec.boardId,
+      difficulty: board.spec.difficulty,
+    });
   await dispatch({
     code: SelectBoardActionCode,
     board,

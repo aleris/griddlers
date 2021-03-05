@@ -1,9 +1,10 @@
-import {BoardSpec} from './BoardSpec'
+import { BoardSpec } from "./BoardSpec";
 
 export type Pack = {
-  position: number,
-  id: string
-  pictureSpecs: BoardSpec[]
-}
+  position: number;
+  id: string;
+  boardSpecs: BoardSpec[];
+  coverBoardIndex: number;
+};
 
-export const PACK_LEVEL_COUNT = 15
+export const PACK_LEVEL_COUNT = 15;

@@ -13,9 +13,9 @@ export const DifficultyView = ({ rating, completed }: Props) => (
     {Array.from({ length: rating }).map((_, index) => (
       <div key={index} className="Difficulty--Cell">
         {completed ? (
-          <img src={MedalColor} alt="" />
+          <img src={MedalColor} alt="Completed Medal" />
         ) : (
-          <img src={MedalBw} alt="" />
+          <img src={MedalBw} alt="Uncompleted Medal Placeholder" />
         )}
       </div>
     ))}

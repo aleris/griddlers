@@ -1,9 +1,26 @@
 @import "../style/vars";
+@import "../style/animations";
 
 .Home {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  &--SupraTitle {
+    animation: slide-in-fwd-center-rotate 1s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    font-size: 7vmin;
+    font-weight: bold;
+    font-style: italic;
+    color: $color-secondary;
+    will-change: transform;
+    text-align: center;
+    transform: rotate3d(0, 0, -3, 30deg);
+    margin-left: -25vmin;
+    margin-top: -15vmin;
+    margin-bottom: 2vmin;
+    text-shadow: $title-text-shadow;
+  }
 
   &--Title {
     margin-bottom: 5vmin;
@@ -17,8 +34,9 @@
     justify-content: flex-start;
     padding: 2vmin;
 
-    &::before, &::after {
-      content: '';
+    &::before,
+    &::after {
+      content: "";
       margin: auto;
     }
   }
@@ -32,10 +50,15 @@
       transform: skewX(-30deg);
       border: none;
       outline: none;
-      height: 20vmin;
+      height: 30vmin;
       width: 20vmin;
       margin-left: 5vmin;
-      background-image: linear-gradient(to right, #ECE9E6 0%, #FFFFFF 51%, #ECE9E6 100%);
+      background-image: linear-gradient(
+        to right,
+        #ece9e6 0%,
+        #ffffff 51%,
+        #ece9e6 100%
+      );
       transition: 0.5s;
       background-size: 200% auto;
       box-shadow: 0 0 1vmin 0 rgba(0, 0, 0, 0.2);
@@ -64,10 +87,13 @@
     &--Grid {
       margin-left: 3vmin;
       margin-bottom: 2vmin;
+      height: 14vmin;
+      display: flex;
     }
 
-    &--Trophy {
-      margin-left: -7vmin;
+    &--Progress {
+      width: 100%;
+      margin-left: 5vmin;
     }
   }
 }

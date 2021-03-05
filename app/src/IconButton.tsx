@@ -7,8 +7,8 @@ type Props = {
   size?: "Default" | "Small";
   disabled?: boolean;
   icon: ReactNode;
-  onAnimationStarted?: () => void;
-  onAnimationFinished: () => void;
+  onClick: () => void;
+  clickDelayMs?: number;
 };
 
 export const IconButton = ({
@@ -16,16 +16,13 @@ export const IconButton = ({
   size = "Default",
   disabled = false,
   icon,
-  onAnimationStarted,
-  onAnimationFinished,
+  onClick,
+  clickDelayMs = 250,
 }: Props) => {
   const [animate, setAnimate] = useState(false);
   const handleButtonOnClick = () => {
-    if (onAnimationStarted) {
-      onAnimationStarted();
-    }
     setAnimate(true);
-    setTimeout(onAnimationFinished, 250);
+    setTimeout(onClick, clickDelayMs);
   };
 
   const buttonClassName = classNames("IconButton", {

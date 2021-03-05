@@ -3,7 +3,6 @@
 $color-button-shadow: rgba(0, 0, 0, 0.2);
 
 .BoardButton {
-
   button {
     width: 18vmin;
     height: 18vmin;
@@ -13,7 +12,7 @@ $color-button-shadow: rgba(0, 0, 0, 0.2);
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
+    background-color: fade-out($color-secondary, 0.8);
     border: 1px solid $color-button-shadow;
     border-radius: 2vmin;
     box-shadow: 0 1vmin 0 0 $color-button-shadow;
@@ -26,6 +25,7 @@ $color-button-shadow: rgba(0, 0, 0, 0.2);
 
       &:hover {
         transform: translate3d(0, 0.25vmin, 0);
+        background-color: fade-out($color-highlight, 0.8);
         border-color: $color-highlight;
         box-shadow: 0 0.75vmin 0 0 $color-highlight;
       }
@@ -46,6 +46,7 @@ $color-button-shadow: rgba(0, 0, 0, 0.2);
     &:disabled {
       transform: translate3d(0, 0.5vmin, 0);
       box-shadow: 0 0.5vmin 0 0 $color-button-shadow;
+      background-color: fade-out($color-button-shadow, 0.175);
       justify-content: center;
 
       svg {
@@ -59,6 +60,7 @@ $color-button-shadow: rgba(0, 0, 0, 0.2);
 
   &--Highlight {
     button {
+      background-color: fade-out($color-primary, 0.8);
       box-shadow: 0 1vmin 0 0 $color-primary;
       border-color: $color-primary;
     }

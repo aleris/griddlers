@@ -1,17 +1,17 @@
-import './AnimatedTitle.scss'
+import "./AnimatedTitle.scss";
 
 type Props = {
-  text: string
-}
+  text: string;
+};
 
-export const AnimatedTitle = ({text}: Props) => {
+export const AnimatedTitle = ({ text }: Props) => {
   return (
     <div className="AnimatedTitle">
-      {
-        text.split('').map((letter, index) =>
-          <div key={index} style={{animationDelay: `${index * 70}ms`}}>{letter}</div>
-        )
-      }
+      {text.split("").map((letter, index) => (
+        <div key={index} style={{ animationDelay: `${index * 70}ms` }}>
+          {letter}
+        </div>
+      ))}
     </div>
-  )
-}
+  );
+};

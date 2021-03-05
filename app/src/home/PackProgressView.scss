@@ -1,0 +1,17 @@
+.PackProgress {
+  &--Medals {
+    display: flex;
+  }
+
+  &--Medal {
+    img {
+      width: 3vmin;
+      display: block;
+      margin: auto;
+    }
+  }
+  &--Count {
+    font-size: 2vmin;
+    font-weight: bold;
+  }
+}

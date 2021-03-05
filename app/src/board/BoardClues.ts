@@ -1,19 +1,31 @@
 import { Clue, ClueLine, Fill, FillEmpty } from "./Board";
+import { FillSupport } from "./FillSupport";
 
 export class BoardClues {
-  public static extractCluesH(fillGrid: Fill[][]): ClueLine[] {
-    return this.padLineClues(fillGrid.map((row) => this.extractLineClues(row)));
+  public static extractCluesH(
+    fillGrid: Fill[][],
+    withHiddenColors: boolean
+  ): ClueLine[] {
+    return this.padLineClues(
+      fillGrid.map((row) => this.extractLineClues(row, withHiddenColors))
+    );
   }
 
-  public static extractCluesV(fillGrid: Fill[][]): ClueLine[] {
+  public static extractCluesV(
+    fillGrid: Fill[][],
+    withHiddenColors: boolean
+  ): ClueLine[] {
     const lineClues = fillGrid[0].map((_, colIndex) => {
       const col = fillGrid.map((_, rowIndex) => fillGrid[rowIndex][colIndex]);
-      return this.extractLineClues(col);
+      return this.extractLineClues(col, withHiddenColors);
     });
     return this.padLineClues(lineClues);
   }
 
-  private static extractLineClues(line: Fill[]): ClueLine {
+  private static extractLineClues(
+    line: Fill[],
+    withHiddenColors: boolean
+  ): ClueLine {
     const clueLine: ClueLine = [];
     let fill: Fill = null;
     let count = 0;
@@ -30,11 +42,14 @@ export class BoardClues {
 
     for (let i = 0; i !== line.length; i++) {
       const lineFill = line[i];
-      if (fill !== lineFill) {
+      const hiddenFill = withHiddenColors
+        ? FillSupport.hideColor(lineFill)
+        : lineFill;
+      if (fill !== hiddenFill) {
         addClueIfNotEmpty();
         count = 0;
       }
-      fill = lineFill;
+      fill = hiddenFill;
       count++;
     }
     addClueIfNotEmpty();

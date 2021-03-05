@@ -2,8 +2,9 @@ import "./App.scss";
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { BoardPage } from "./board/BoardPage";
+import { EditorPage } from "./editor/EditorPage";
 import { GameProvider } from "./GameContext";
-import {HomePage} from './home/HomePage'
+import { HomePage } from "./home/HomePage";
 import { PackPage } from "./pack/PackPage";
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
             </Route>
             <Route path="/pack">
               <PackPage />
+            </Route>
+            <Route path="/--/editor">
+              <EditorPage />
             </Route>
             <Route path="/">
               <HomePage />

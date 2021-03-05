@@ -1,26 +1,22 @@
+import { default as firebase } from "firebase/app";
 import { Board } from "../board/Board";
 import { GameState, GameActionDispatch } from "../GameContext";
-import {PackWithProgress} from '../home/PackWithProgress'
+import { PackWithProgress } from "../home/PackWithProgress";
 import { BoardRegistry } from "../registry/BoardRegistry";
 
 export const CompleteBoardActionCode = "CompleteBoard";
 
 export type CompleteBoardActionType = {
   code: typeof CompleteBoardActionCode;
-  completed: true;
+  board: Board;
   nextBoard: Board | null;
   completedBoards: Board[];
-  pack: PackWithProgress
+  pack: PackWithProgress;
 };
 
 export const completeBoardReducer = (
   state: GameState,
-  {
-    completed,
-    nextBoard,
-    completedBoards,
-    pack
-  }: CompleteBoardActionType
+  { board, nextBoard, completedBoards, pack }: CompleteBoardActionType
 ): GameState => {
   if (state.selectedBoard === null) {
     console.error("completeBoardReducer selectedBoard is null");
@@ -29,12 +25,12 @@ export const completeBoardReducer = (
   return {
     ...state,
     selectedBoard: {
-      ...state.selectedBoard,
-      completed,
+      ...board,
+      completed: true,
     },
     nextBoard,
     completedBoards,
-    selectedPack: pack
+    selectedPack: pack,
   };
 };
 
@@ -42,15 +38,20 @@ export const completeBoardAction = (board: Board) => async (
   state: GameState,
   dispatch: GameActionDispatch
 ) => {
-  const completed = true;
+  firebase
+    .analytics()
+    .logEvent("complete_board", {
+      boardId: board.spec.boardId,
+      difficulty: board.spec.difficulty,
+    });
   const nextBoard = await BoardRegistry.completeBoard(board);
   const completedBoards = await BoardRegistry.getCompleted(board.packId);
-  const pack = await BoardRegistry.getPackWithProgress(board.packId)
+  const pack = await BoardRegistry.getPackWithProgress(board.packId);
   await dispatch({
     code: CompleteBoardActionCode,
-    completed,
+    board,
     nextBoard,
     completedBoards,
-    pack
+    pack,
   });
 };

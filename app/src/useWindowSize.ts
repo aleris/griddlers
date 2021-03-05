@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export default function useWindowSize() {
   // if (typeof window !== "undefined") {
@@ -11,15 +11,21 @@ export default function useWindowSize() {
 
   React.useEffect(() => {
     window.addEventListener("resize", () => {
-      setWindowSize({ windowWidth: window.innerWidth, windowHeight: window.innerHeight });
+      setWindowSize({
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+      });
     });
 
     return () => {
       window.removeEventListener("resize", () => {
-        setWindowSize({ windowWidth: window.innerWidth, windowHeight: window.innerHeight });
+        setWindowSize({
+          windowWidth: window.innerWidth,
+          windowHeight: window.innerHeight,
+        });
       });
     };
   }, []);
 
-  return windowSize
+  return windowSize;
 }

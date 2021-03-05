@@ -1,11 +1,13 @@
-import { PictureSpec } from "../registry/BoardRegistry";
+import { BoardSpec } from "../registry/BoardSpec";
 import { FillEmpty } from "./Board";
 import { BoardBuilder } from "./BoardBuilder";
 
 describe("BoardBuilder", () => {
-  test("fromPictureSpec returns correct grid and clues with 1x1 mono", () => {
-    const testSpec: PictureSpec = {
-      id: "test",
+  test("buildBoardFromSpec returns correct grid and clues with 1x1 mono", () => {
+    const testSpec: BoardSpec = {
+      positionInPack: 1,
+      difficulty: 1,
+      boardId: "test",
       cellSpecs: `
 #.
 ##
@@ -14,10 +16,11 @@ describe("BoardBuilder", () => {
         ".": FillEmpty,
         "#": "black",
       },
+      withHiddenColors: false,
     };
     const black = testSpec.palette["#"];
 
-    const board = BoardBuilder.buildBoardFromPictureSpec(testSpec);
+    const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);
 
     expect(board.grid["0:0"].fill).toStrictEqual(black);
     expect(board.grid["0:1"].fill).toStrictEqual(FillEmpty);
@@ -31,9 +34,11 @@ describe("BoardBuilder", () => {
     expect(board.cluesH[1]).toStrictEqual([{ count: 2, fill: black }]);
   });
 
-  test("fromPictureSpec returns correct grid and clues with 3x2 mono", () => {
-    const testSpec: PictureSpec = {
-      id: "test",
+  test("buildBoardFromSpec returns correct grid and clues with 3x2 mono", () => {
+    const testSpec: BoardSpec = {
+      boardId: "test",
+      positionInPack: 1,
+      difficulty: 1,
       cellSpecs: `
 ..........
 ..##..##..
@@ -48,10 +53,11 @@ describe("BoardBuilder", () => {
         ".": FillEmpty,
         "#": "red",
       },
+      withHiddenColors: false,
     };
     const red = testSpec.palette["#"];
 
-    const board = BoardBuilder.buildBoardFromPictureSpec(testSpec);
+    const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);
 
     expect(board.grid["1:1"].fill).toStrictEqual(FillEmpty);
     expect(board.grid["1:2"].fill).toStrictEqual(red);
@@ -89,9 +95,11 @@ describe("BoardBuilder", () => {
     ]);
   });
 
-  test("fromPictureSpec returns correct grid and color clues", () => {
-    const testSpec: PictureSpec = {
-      id: "test",
+  test("buildBoardFromSpec returns correct grid and color clues", () => {
+    const testSpec: BoardSpec = {
+      boardId: "test",
+      positionInPack: 1,
+      difficulty: 1,
       cellSpecs: `
 .GG.
 Y.B.
@@ -104,12 +112,13 @@ Y.B.
         Y: "yellow",
         B: "blue",
       },
+      withHiddenColors: false,
     };
     const green = testSpec.palette["G"];
     const yellow = testSpec.palette["Y"];
     const blue = testSpec.palette["B"];
 
-    const board = BoardBuilder.buildBoardFromPictureSpec(testSpec);
+    const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);
 
     expect(board.grid["0:0"].fill).toStrictEqual(FillEmpty);
     expect(board.grid["0:1"].fill).toStrictEqual(green);

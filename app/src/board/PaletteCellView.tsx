@@ -5,7 +5,6 @@ import { FillSupport } from "./FillSupport";
 
 type Props = {
   fill: Fill;
-  cellSize: number;
   checked: boolean;
   onClick: () => void;
 };
@@ -16,12 +15,7 @@ const CheckElement = (
   </svg>
 );
 
-export const PaletteCellView = ({
-  fill,
-  cellSize,
-  checked,
-  onClick,
-}: Props) => {
+export const PaletteCellView = ({ fill, checked, onClick }: Props) => {
   const fillColor = FillSupport.toColor(fill);
   const classNameFill = classNames("PaletteCell--Fill", {
     Color: !FillSupport.isEmptyOrMarkedEmpty(fill),
@@ -29,10 +23,7 @@ export const PaletteCellView = ({
     MarkedEmpty: fill === FillMarkedEmpty,
   });
   return (
-    <div
-      className="PaletteCell"
-      onClick={onClick}
-    >
+    <div className="PaletteCell" onClick={onClick}>
       <div
         className={classNameFill}
         style={{ backgroundColor: fillColor, borderColor: fillColor }}
