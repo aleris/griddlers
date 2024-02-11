@@ -1,66 +1,89 @@
 import "./EditorPage.scss";
 import React, { useState } from "react";
 import NextSvg from "../assets/next.svg";
-import { Fill, FillColors, FillEmpty, GridPosition } from "../board/Board";
-import { BoardBuilder } from "../board/BoardBuilder";
+import {
+  Fill,
+  FillBlockBlack,
+  FillBlockBlue,
+  FillBlockDarkBlue,
+  FillBlockDarkGreen,
+  FillBlockDarkMaroon,
+  FillBlockDarkYellow,
+  FillBlockGreen,
+  FillBlockMaroon,
+  FillBlockOrange,
+  FillBlockRed,
+  FillBlockViolet,
+  FillBlockYellow,
+  FillEmpty,
+  GridPosition,
+} from "../board/Board";
 import { BoardSupport } from "../board/BoardSupport";
 import { FillSupport } from "../board/FillSupport";
 import { GridView } from "../board/GridView";
 import { PaletteView } from "../board/PaletteView";
 import { IconButton } from "../IconButton";
-import EmptyBlockSvg from "../assets/empty-block.svg";
+import ClearAllIcon from "../assets/rubber.svg";
+// import inspireImage from '../registry/inspire/t.png'
 import { BoardSpec } from "../registry/BoardSpec";
-// import inspireImage from "../registry/inspire/f.png";
-
-const width = 18;
-const height = 18;
-
-const emptySpec: BoardSpec = {
-  boardId: "board--edit",
-  positionInPack: 1,
-  cellSpecs: "",
-  palette: {
-    ".": FillEmpty,
-    "#": FillColors.Black,
-    R: FillColors.Red,
-    Y: FillColors.Yellow,
-    G: FillColors.Green,
-    B: FillColors.Blue,
-    V: FillColors.Violet,
-    O: FillColors.Orange,
-  },
-  difficulty: 1,
-  withHiddenColors: false,
-};
-
-const emptyFillMatrix = Array.from({ length: height }).map((_) =>
-  Array.from({ length: width }).map((_) => FillEmpty)
-);
-
-const emptyEditBoard = BoardBuilder.buildBoardFromFillMatrix(
-  "pack--edit",
-  emptySpec,
-  emptyFillMatrix
-);
-
-const palette = BoardBuilder.buildPaletteFromSpec(emptySpec.palette, false);
-
-const firstPaletteFill = BoardBuilder.getFirstColorFill(palette);
-
-function findPaletteKey(fill: Fill) {
-  return (
-    Array.from(Object.entries(emptySpec.palette)).find(
-      ([k, v]) => v === fill
-    )?.[0] ?? "."
-  );
-}
+import { PaletteSpec } from "../registry/PaletteSpec";
+import { BoardBuilder } from "../board/BoardBuilder";
 
 export const EditorPage = () => {
+  const width = 25;
+  const height = 25;
+
+  const emptySpec: BoardSpec = {
+    boardId: "board--edit",
+    positionInPack: 1,
+    cellSpecs: "",
+    difficulty: 1,
+    withHiddenColors: false,
+  };
+
+  const emptyFillMatrix = Array.from({ length: height }).map((_) =>
+    Array.from({ length: width }).map((_) => FillEmpty)
+  );
+
+  const paletteSpec: PaletteSpec = {
+    "⬛": FillBlockBlack,
+    "🟥": FillBlockRed,
+    "🟪": FillBlockViolet,
+    "🟦": FillBlockBlue,
+    "🟩": FillBlockGreen,
+    "🟨": FillBlockYellow,
+    "🟧": FillBlockOrange,
+    "🟫": FillBlockMaroon,
+    "🔵": FillBlockDarkBlue,
+    "🟢": FillBlockDarkGreen,
+    "🟡": FillBlockDarkYellow,
+    "🟤": FillBlockDarkMaroon,
+  };
+
+  const emptyEditBoard = BoardBuilder.buildBoardFromFillMatrix(
+    "pack--edit",
+    emptySpec,
+    paletteSpec,
+    emptyFillMatrix
+  );
+
+  const palette = BoardBuilder.buildPaletteFromSpec(paletteSpec, false);
+
+  const firstPaletteFill = BoardBuilder.getFirstColorFill(palette);
+
+  function findPaletteKey(fill: Fill) {
+    return (
+      Array.from(Object.entries(paletteSpec)).find(
+        ([k, v]) => v === fill
+      )?.[0] ?? "⬜"
+    );
+  }
+
   const [board, setBoard] = useState(emptyEditBoard);
   const [selectedFill, setSelectedFill] = useState(firstPaletteFill);
   const [generated, setGenerated] = useState("");
 
-  const cellSize = 32;
+  const cellSize = 24;
 
   const handleOnCellClick = (position: GridPosition) => {
     setBoard({
@@ -143,7 +166,7 @@ export const EditorPage = () => {
         style={{ marginTop: `${cellSize / 2}px` }}
       >
         <IconButton
-          icon={<img src={EmptyBlockSvg} alt="Clear All" />}
+          icon={<img src={ClearAllIcon} alt="Clear All" />}
           size={"Small"}
           onClick={handleClearOnClick}
         />

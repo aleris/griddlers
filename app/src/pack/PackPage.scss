@@ -23,4 +23,18 @@
       will-change: transform;
     }
   }
+
+  &--Next {
+    margin-top: 1rem;
+    transform: translateX(-10000px);
+
+    & > .Button {
+      animation: slide-in-left 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s
+        both;
+    }
+
+    &--Won {
+      transform: translateX(0);
+    }
+  }
 }

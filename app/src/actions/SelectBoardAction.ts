@@ -1,4 +1,3 @@
-import { default as firebase } from "firebase/app";
 import { Dispatch } from "react";
 import { Board } from "../board/Board";
 import { GameState } from "../GameContext";
@@ -21,26 +20,19 @@ export const selectBoardReducer = (
   };
 };
 
-export const selectBoardAction = (id: string) => async (
-  state: GameState,
-  dispatch: Dispatch<SelectBoardActionType>
-) => {
-  if (state.selectedPack === null) {
-    console.error("selectBoardAction selectedPack is null");
-    return;
-  }
-  const board = await BoardRegistry.getCompletedOrCurrentById(
-    state.selectedPack.packId,
-    id
-  );
-  firebase
-    .analytics()
-    .logEvent("select_board", {
-      boardId: board.spec.boardId,
-      difficulty: board.spec.difficulty,
+export const selectBoardAction =
+  (id: string) =>
+  async (state: GameState, dispatch: Dispatch<SelectBoardActionType>) => {
+    if (state.selectedPack === null) {
+      console.error("selectBoardAction selectedPack is null");
+      return;
+    }
+    const board = await BoardRegistry.getCurrentOrLoad(
+      state.selectedPack.packId,
+      id
+    );
+    await dispatch({
+      code: SelectBoardActionCode,
+      board,
     });
-  await dispatch({
-    code: SelectBoardActionCode,
-    board,
-  });
-};
+  };

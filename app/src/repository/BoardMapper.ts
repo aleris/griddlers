@@ -15,9 +15,13 @@ export class BoardMapper {
 
   static fromPersisted(board: PersistedBoard): Board {
     const spec = BoardRegistry.getSpecById(board.packId, board.id);
+    const paletteSpec = BoardBuilder.resolvePaletteSpecFromBoard(
+      spec.cellSpecs
+    );
     return BoardBuilder.buildBoardFromFillMatrix(
       board.packId,
       spec,
+      paletteSpec,
       board.grid
     );
   }

@@ -8,8 +8,10 @@ type Props = {
 
 export const BackButton = ({ onClick }: Props) => {
   return (
-    <button type="button" className="BackButton" onClick={onClick}>
-      <img src={BackIcon} alt="Back" />
-    </button>
+    <div className="BackButton">
+      <button type="button" onClick={onClick} title="Go Back">
+        <img src={BackIcon} alt="Back" />
+      </button>
+    </div>
   );
 };

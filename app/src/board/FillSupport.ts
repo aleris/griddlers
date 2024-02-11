@@ -1,10 +1,36 @@
 import {
   Color,
   Fill,
-  FillColors,
   FillEmpty,
   FillHiddenBlock,
   FillMarkedEmpty,
+  FillBlockBlack,
+  ColorKeyEmpty,
+  ColorKeyBlack,
+  ColorKeyRed,
+  FillBlockRed,
+  ColorKeyViolet,
+  FillBlockViolet,
+  ColorKeyBlue,
+  FillBlockBlue,
+  ColorKeyGreen,
+  FillBlockGreen,
+  ColorKeyYellow,
+  FillBlockYellow,
+  ColorKeyOrange,
+  FillBlockOrange,
+  ColorKeyBrown,
+  FillBlockMaroon,
+  ColorKeyDarkBlue,
+  FillBlockDarkBlue,
+  ColorKeyDarkGreen,
+  FillBlockDarkGreen,
+  ColorKeyDarkYellow,
+  FillBlockDarkYellow,
+  ColorKeyDarkMaroon,
+  FillBlockDarkMaroon,
+  ColorKey,
+  FillBlockWhite,
 } from "./Board";
 
 export class FillSupport {
@@ -20,11 +46,44 @@ export class FillSupport {
     return fill === null || fill === FillEmpty || fill === FillMarkedEmpty;
   }
 
+  static mapColorKeyToColor(colorKey: ColorKey): Color {
+    switch (colorKey) {
+      case ColorKeyEmpty:
+        return FillEmpty;
+      case ColorKeyBlack:
+        return FillBlockBlack;
+      case ColorKeyRed:
+        return FillBlockRed;
+      case ColorKeyViolet:
+        return FillBlockViolet;
+      case ColorKeyBlue:
+        return FillBlockBlue;
+      case ColorKeyGreen:
+        return FillBlockGreen;
+      case ColorKeyYellow:
+        return FillBlockYellow;
+      case ColorKeyOrange:
+        return FillBlockOrange;
+      case ColorKeyBrown:
+        return FillBlockMaroon;
+      case ColorKeyDarkBlue:
+        return FillBlockDarkBlue;
+      case ColorKeyDarkGreen:
+        return FillBlockDarkGreen;
+      case ColorKeyDarkYellow:
+        return FillBlockDarkYellow;
+      case ColorKeyDarkMaroon:
+        return FillBlockDarkMaroon;
+      default:
+        return FillEmpty;
+    }
+  }
+
   static toColor(
     fill: Fill,
     hide = false,
-    emptyColor: Color = FillColors.White,
-    hiddenBlockColor: Color = FillColors.Black
+    emptyColor: Color = FillBlockWhite,
+    hiddenBlockColor: Color = FillBlockBlack
   ): Color {
     if (hide || this.isEmptyOrMarkedEmpty(fill)) {
       return emptyColor;

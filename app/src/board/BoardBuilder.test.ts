@@ -1,6 +1,15 @@
 import { BoardSpec } from "../registry/BoardSpec";
-import { FillEmpty } from "./Board";
+import {
+  FillBlockBlack,
+  FillBlockBlue,
+  FillBlockGreen,
+  FillBlockOrange,
+  FillBlockRed,
+  FillBlockYellow,
+  FillEmpty,
+} from "./Board";
 import { BoardBuilder } from "./BoardBuilder";
+import { describe, expect, test } from "vitest";
 
 describe("BoardBuilder", () => {
   test("buildBoardFromSpec returns correct grid and clues with 1x1 mono", () => {
@@ -9,29 +18,23 @@ describe("BoardBuilder", () => {
       difficulty: 1,
       boardId: "test",
       cellSpecs: `
-#.
-##
+⬛⬜
+⬛⬛
 `,
-      palette: {
-        ".": FillEmpty,
-        "#": "black",
-      },
       withHiddenColors: false,
     };
-    const black = testSpec.palette["#"];
-
     const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);
 
-    expect(board.grid["0:0"].fill).toStrictEqual(black);
+    expect(board.grid["0:0"].fill).toStrictEqual(FillBlockBlack);
     expect(board.grid["0:1"].fill).toStrictEqual(FillEmpty);
-    expect(board.grid["1:0"].fill).toStrictEqual(black);
-    expect(board.grid["1:1"].fill).toStrictEqual(black);
+    expect(board.grid["1:0"].fill).toStrictEqual(FillBlockBlack);
+    expect(board.grid["1:1"].fill).toStrictEqual(FillBlockBlack);
     expect(board.cluesV.length).toStrictEqual(2);
-    expect(board.cluesV[0]).toStrictEqual([{ count: 2, fill: black }]);
-    expect(board.cluesV[1]).toStrictEqual([{ count: 1, fill: black }]);
+    expect(board.cluesV[0]).toStrictEqual([{ count: 2, fill: FillBlockBlack }]);
+    expect(board.cluesV[1]).toStrictEqual([{ count: 1, fill: FillBlockBlack }]);
     expect(board.cluesH.length).toStrictEqual(2);
-    expect(board.cluesH[0]).toStrictEqual([{ count: 1, fill: black }]);
-    expect(board.cluesH[1]).toStrictEqual([{ count: 2, fill: black }]);
+    expect(board.cluesH[0]).toStrictEqual([{ count: 1, fill: FillBlockBlack }]);
+    expect(board.cluesH[1]).toStrictEqual([{ count: 2, fill: FillBlockBlack }]);
   });
 
   test("buildBoardFromSpec returns correct grid and clues with 3x2 mono", () => {
@@ -40,22 +43,18 @@ describe("BoardBuilder", () => {
       positionInPack: 1,
       difficulty: 1,
       cellSpecs: `
-..........
-..##..##..
-.#..##..#.
-.#......#.
-..#....#..
-...#..#...
-....##....
-..........
+⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
+⬜⬜🟥🟥⬜⬜🟥🟥⬜⬜
+⬜🟥⬜⬜🟥🟥⬜⬜🟥⬜
+⬜🟥⬜⬜⬜⬜⬜⬜🟥⬜
+⬜⬜🟥⬜⬜⬜⬜🟥⬜⬜
+⬜⬜⬜🟥⬜⬜🟥⬜⬜⬜
+⬜⬜⬜⬜🟥🟥⬜⬜⬜⬜
+⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜
 `,
-      palette: {
-        ".": FillEmpty,
-        "#": "red",
-      },
       withHiddenColors: false,
     };
-    const red = testSpec.palette["#"];
+    const red = FillBlockRed;
 
     const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);
 
@@ -101,22 +100,16 @@ describe("BoardBuilder", () => {
       positionInPack: 1,
       difficulty: 1,
       cellSpecs: `
-.GG.
-Y.B.
-....
-..GB
+⬜🟩🟩⬜
+🟨⬜🟦⬜
+⬜⬜⬜⬜
+⬜⬜🟩🟦
 `,
-      palette: {
-        ".": FillEmpty,
-        G: "green",
-        Y: "yellow",
-        B: "blue",
-      },
       withHiddenColors: false,
     };
-    const green = testSpec.palette["G"];
-    const yellow = testSpec.palette["Y"];
-    const blue = testSpec.palette["B"];
+    const green = FillBlockGreen;
+    const yellow = FillBlockYellow;
+    const blue = FillBlockBlue;
 
     const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);
 
@@ -177,6 +170,78 @@ Y.B.
     expect(board.cluesH[3]).toStrictEqual([
       { count: 1, fill: green },
       { count: 1, fill: blue },
+    ]);
+  });
+
+  test("buildBoardFromSpec resolves palette", () => {
+    const cellSpecs = `
+⬜🟩🟩⬜
+🟨⬜🟦⬜
+⬜⬜⬜⬜
+⬜⬜🟩🟦
+`;
+
+    const paletteSpec = BoardBuilder.resolvePaletteSpecFromBoard(cellSpecs);
+
+    expect(paletteSpec).toStrictEqual({
+      "🟩": FillBlockGreen,
+      "🟨": FillBlockYellow,
+      "🟦": FillBlockBlue,
+    });
+  });
+
+  test("buildBoardFromSpec returns correct with more complex grid and color clues", () => {
+    const testSpec: BoardSpec = {
+      boardId: "test",
+      positionInPack: 1,
+      difficulty: 1,
+      cellSpecs: `
+⬜🟦🟦🟦⬜⬜⬛🟧🟧🟧⬜⬜⬛🟩
+⬛🟦⬜⬜🟦⬜⬛🟧⬜⬜🟧⬜⬛🟩
+⬛🟦⬜⬜🟦⬜⬛🟧⬜⬜🟧⬜⬛🟩
+⬛🟦🟦🟦🟦⬜⬛🟧⬜⬜🟧⬜⬛🟩
+⬛🟦⬜⬜🟦⬜⬛🟧⬜⬜🟧⬜⬛🟩
+⬛🟦⬜⬜🟦⬜⬛🟧🟧🟧⬜⬜⬛🟩
+`,
+      withHiddenColors: false,
+    };
+
+    const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);
+
+    expect(board.cluesV.length).toStrictEqual(14);
+    expect(board.cluesV[1]).toStrictEqual([
+      { count: 0, fill: FillEmpty },
+      { count: 6, fill: FillBlockBlue },
+    ]);
+    expect(board.cluesV[10]).toStrictEqual([
+      { count: 0, fill: FillEmpty },
+      { count: 4, fill: FillBlockOrange },
+    ]);
+    expect(board.cluesV[13]).toStrictEqual([
+      { count: 0, fill: FillEmpty },
+      { count: 6, fill: FillBlockGreen },
+    ]);
+
+    expect(board.cluesH.length).toStrictEqual(6);
+    expect(board.cluesH[0]).toStrictEqual([
+      { count: 0, fill: FillEmpty },
+      { count: 0, fill: FillEmpty },
+      { count: 0, fill: FillEmpty },
+      { count: 3, fill: FillBlockBlue },
+      { count: 1, fill: FillBlockBlack },
+      { count: 3, fill: FillBlockOrange },
+      { count: 1, fill: FillBlockBlack },
+      { count: 1, fill: FillBlockGreen },
+    ]);
+    expect(board.cluesH[3]).toStrictEqual([
+      { count: 0, fill: FillEmpty },
+      { count: 1, fill: FillBlockBlack },
+      { count: 4, fill: FillBlockBlue },
+      { count: 1, fill: FillBlockBlack },
+      { count: 1, fill: FillBlockOrange },
+      { count: 1, fill: FillBlockOrange },
+      { count: 1, fill: FillBlockBlack },
+      { count: 1, fill: FillBlockGreen },
     ]);
   });
 });

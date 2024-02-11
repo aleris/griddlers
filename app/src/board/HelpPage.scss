@@ -1,0 +1,61 @@
+@import "../style/animations";
+@import "../style/vars";
+
+.HelpPage {
+  position: fixed;
+  background-color: #eeeeeeee;
+  z-index: 1000;
+  animation: slide-in-top 0.4s ease-out both;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vmin;
+
+  &--Frame {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    margin: 5vmin;
+    height: 90vmin;
+    overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 3em;
+
+    &--CloseButton {
+      top: 5vmin !important;
+      right: 7vmin !important;
+    }
+
+    &--Content {
+      line-height: 1.5rem;
+      margin: 0 auto;
+      min-width: 400px;
+      max-width: 800px;
+
+      h3,
+      p,
+      ul {
+        margin-bottom: 1rem;
+      }
+
+      ul {
+        margin-left: 1rem;
+      }
+
+      &--Example {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      &--ExampleGroup {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+
+        .HelpPage--Frame--Content--Example {
+          margin-right: 2rem;
+        }
+      }
+    }
+  }
+}

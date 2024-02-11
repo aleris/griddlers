@@ -10,6 +10,7 @@ type Props = {
   onCellClick: (position: GridPosition) => void;
   selectionBackgroundColor: Color;
   onCellZoneSelect: (from: GridPosition, to: GridPosition) => void;
+  interactive?: boolean;
 };
 
 type SelectionZone = {
@@ -23,6 +24,7 @@ export const GridView = ({
   onCellClick,
   selectionBackgroundColor,
   onCellZoneSelect,
+  interactive = true,
 }: Props) => {
   const [selectionStart, setSelectionStart] = useState<GridPosition | null>(
     null
@@ -36,21 +38,24 @@ export const GridView = ({
   const height = BoardSupport.height(board);
 
   const handleOnMouseDown = (rowIndex: number, colIndex: number) => {
-    setSelectionStart({ rowIndex, colIndex });
+    if (interactive) {
+      setSelectionStart({ rowIndex, colIndex });
+    }
   };
 
   const handleOnMouseMove = (rowIndex: number, colIndex: number) => {
-    if (selectionStart !== null) {
-      const minRowIndex = Math.min(selectionStart.rowIndex, rowIndex);
-      const maxRowIndex = Math.max(selectionStart.rowIndex, rowIndex);
-      const minColIndex = Math.min(selectionStart.colIndex, colIndex);
-      const maxColIndex = Math.max(selectionStart.colIndex, colIndex);
-      setSelection({
-        start: { rowIndex: minRowIndex, colIndex: minColIndex },
-        end: { rowIndex: maxRowIndex, colIndex: maxColIndex },
-      });
-      setSelectionCurrent({ rowIndex, colIndex });
+    if (selectionStart === null) {
+      return;
     }
+    const minRowIndex = Math.min(selectionStart.rowIndex, rowIndex);
+    const maxRowIndex = Math.max(selectionStart.rowIndex, rowIndex);
+    const minColIndex = Math.min(selectionStart.colIndex, colIndex);
+    const maxColIndex = Math.max(selectionStart.colIndex, colIndex);
+    setSelection({
+      start: { rowIndex: minRowIndex, colIndex: minColIndex },
+      end: { rowIndex: maxRowIndex, colIndex: maxColIndex },
+    });
+    setSelectionCurrent({ rowIndex, colIndex });
   };
 
   const handleOnMouseUp = (rowIndex: number, colIndex: number) => {
@@ -130,6 +135,7 @@ export const GridView = ({
             onMouseDown={() => handleOnMouseDown(rowIndex, colIndex)}
             onMouseMove={() => handleOnMouseMove(rowIndex, colIndex)}
             onMouseUp={() => handleOnMouseUp(rowIndex, colIndex)}
+            interactive={interactive}
           />
         )
       )}

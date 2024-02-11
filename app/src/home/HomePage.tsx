@@ -9,19 +9,29 @@ import { AnimatedTitle } from "./AnimatedTitle";
 import { PackProgressView } from "./PackProgressView";
 import { PackWithProgress } from "./PackWithProgress";
 
+const DEBUG_SHOW_ALL_AS_SOLVED = false;
+
 export const HomePage = () => {
   const { state, dispatch } = useContext(GameContext);
   const history = useHistory();
 
   const packs = state.packs;
+  const showPacks = DEBUG_SHOW_ALL_AS_SOLVED
+    ? state.packs
+    : state.packs.filter((pack, index) => {
+        if (index === 0) {
+          return true;
+        }
+        const previousPack = packs[index - 1];
+        return previousPack.completedPercent === 100;
+      });
 
   const handlePackOnClick = async (pack: PackWithProgress) => {
-    await dispatch(selectPackAction(pack.packId));
+    await dispatch(selectPackAction(pack.packId, DEBUG_SHOW_ALL_AS_SOLVED));
     history.push("/pack");
   };
 
   useEffect(() => {
-    console.log("HomePage useEffect");
     dispatch(loadPacksAction());
     // eslint-disable-next-line
   }, []);
@@ -33,7 +43,7 @@ export const HomePage = () => {
         <AnimatedTitle text="GRIDDLERS" />
       </div>
       <div className="Home--Packs">
-        {packs.map((pack, index) => (
+        {showPacks.map((pack, index) => (
           <div
             key={pack.packId}
             className="Home--Pack"

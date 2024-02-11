@@ -103,6 +103,14 @@ export class BoardSupport {
     return newGrid;
   }
 
+  static revealSolution(board: Board): Board {
+    const newGrid = { ...board.grid };
+    this.mapEachCell(board, (cell, coordinateKey, rowIndex, colIndex) => {
+      newGrid[coordinateKey].guessed = cell.fill;
+    });
+    return { ...board, grid: newGrid };
+  }
+
   static revealHiddenColors(board: Board): Board {
     const fillMatrix = BoardBuilder.mapToFillMatrix(board, false);
     const guessMatrix = BoardBuilder.mapToFillMatrix(board, true);

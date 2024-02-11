@@ -1,3 +1,4 @@
+import React from "react";
 import "./AnimatedTitle.scss";
 
 type Props = {

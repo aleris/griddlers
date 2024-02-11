@@ -1,7 +1,7 @@
 import "./CellView.scss";
 import React from "react";
 import classNames from "../classNames";
-import { Cell, Color, FillMarkedEmpty } from "./Board";
+import { Cell, Color, FillEmpty, FillMarkedEmpty } from "./Board";
 import { FillSupport } from "./FillSupport";
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
   onMouseDown: () => void;
   onMouseMove: () => void;
   onMouseUp: () => void;
+  interactive?: boolean;
 };
 
 export const CellView = ({
@@ -24,6 +25,7 @@ export const CellView = ({
   onMouseDown,
   onMouseMove,
   onMouseUp,
+  interactive = true,
 }: Props) => {
   const fillColor = FillSupport.toColor(cell.guessed);
   const handleOnDragStart = (e: React.DragEvent<HTMLDivElement>) => {
@@ -33,6 +35,9 @@ export const CellView = ({
     <div
       className={classNames("Cell", {
         MarkedEmpty: cell.guessed === FillMarkedEmpty,
+        FilledBlock:
+          cell.guessed !== FillEmpty && cell.guessed !== FillMarkedEmpty,
+        Interactive: interactive,
       })}
       style={{
         backgroundColor: selected ? selectionBackgroundColor : fillColor,

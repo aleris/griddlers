@@ -1,5 +1,6 @@
+import React from "react";
 import "./PackGridView.scss";
-import { Board, FillColors } from "../board/Board";
+import { Board, ColorKeyEmpty, FillBlockWhite } from "../board/Board";
 import { BoardSupport } from "../board/BoardSupport";
 import { FillSupport } from "../board/FillSupport";
 import classNames from "../classNames";
@@ -37,7 +38,7 @@ export const PackGridView = ({ board, hideFills, showGrid = false }: Props) => {
             backgroundColor: FillSupport.toColor(
               cell.fill,
               hideFills,
-              showGrid ? FillColors.White : "transparent"
+              showGrid ? FillBlockWhite : "transparent"
             ),
           }}
         />

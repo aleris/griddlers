@@ -1,97 +1,94 @@
-import { FillColors, FillEmpty, FillMarkedEmpty } from "./Board";
+import {
+  FillBlockBlack,
+  FillBlockBlue,
+  FillBlockOrange,
+  FillBlockRed,
+  FillBlockYellow,
+  FillEmpty,
+  FillMarkedEmpty,
+} from "./Board";
 import { FillSupport } from "./FillSupport";
+import { describe, expect, test } from "vitest";
 
 describe("FillSupport", () => {
   test("matricesEquals true", () => {
     const test1 = [
-      [FillColors.Black, FillColors.Red, FillEmpty],
-      [FillEmpty, FillColors.Yellow, FillColors.Orange],
+      [FillBlockBlack, FillBlockRed, FillEmpty],
+      [FillEmpty, FillBlockYellow, FillBlockOrange],
     ];
     const test2 = [
-      [FillColors.Black, FillColors.Red, FillEmpty],
-      [FillEmpty, FillColors.Yellow, FillColors.Orange],
+      [FillBlockBlack, FillBlockRed, FillEmpty],
+      [FillEmpty, FillBlockYellow, FillBlockOrange],
     ];
     expect(FillSupport.matricesEquals(test1, test2)).toStrictEqual(true);
   });
 
   test("matricesEquals false", () => {
     const test1 = [
-      [FillColors.Black, FillColors.Red, FillEmpty],
-      [FillEmpty, FillColors.Yellow, FillColors.Orange],
+      [FillBlockBlack, FillBlockRed, FillEmpty],
+      [FillEmpty, FillBlockYellow, FillBlockOrange],
     ];
     const test2 = [
-      [FillColors.Black, FillColors.Red, FillEmpty],
-      [FillEmpty, FillColors.Yellow, FillMarkedEmpty],
+      [FillBlockBlack, FillBlockRed, FillEmpty],
+      [FillEmpty, FillBlockYellow, FillMarkedEmpty],
     ];
     expect(FillSupport.matricesEquals(test1, test2)).toStrictEqual(false);
   });
 
   test("flipMatrixH", () => {
     const test = [
-      [FillColors.Black, FillColors.Red, FillEmpty, FillEmpty, FillEmpty],
-      [FillColors.Red, FillColors.Black, FillColors.Red, FillEmpty, FillEmpty],
-      [
-        FillEmpty,
-        FillColors.Red,
-        FillColors.Red,
-        FillColors.Red,
-        FillColors.Red,
-      ],
+      [FillBlockBlack, FillBlockRed, FillEmpty, FillEmpty, FillEmpty],
+      [FillBlockRed, FillBlockBlack, FillBlockRed, FillEmpty, FillEmpty],
+      [FillEmpty, FillBlockRed, FillBlockRed, FillBlockRed, FillBlockRed],
     ];
     const result = FillSupport.flipMatrixH(test);
     expect(result[0]).toStrictEqual([
       FillEmpty,
       FillEmpty,
       FillEmpty,
-      FillColors.Red,
-      FillColors.Black,
+      FillBlockRed,
+      FillBlockBlack,
     ]);
     expect(result[1]).toStrictEqual([
       FillEmpty,
       FillEmpty,
-      FillColors.Red,
-      FillColors.Black,
-      FillColors.Red,
+      FillBlockRed,
+      FillBlockBlack,
+      FillBlockRed,
     ]);
     expect(result[2]).toStrictEqual([
-      FillColors.Red,
-      FillColors.Red,
-      FillColors.Red,
-      FillColors.Red,
+      FillBlockRed,
+      FillBlockRed,
+      FillBlockRed,
+      FillBlockRed,
       FillEmpty,
     ]);
   });
 
   test("flipMatrixV", () => {
     const test = [
-      [FillColors.Black, FillColors.Yellow, FillEmpty, FillEmpty, FillEmpty],
-      [FillColors.Red, FillColors.Black, FillColors.Red, FillEmpty, FillEmpty],
-      [
-        FillEmpty,
-        FillColors.Red,
-        FillColors.Red,
-        FillColors.Red,
-        FillColors.Blue,
-      ],
+      [FillBlockBlack, FillBlockYellow, FillEmpty, FillEmpty, FillEmpty],
+      [FillBlockRed, FillBlockBlack, FillBlockRed, FillEmpty, FillEmpty],
+      [FillEmpty, FillBlockRed, FillBlockRed, FillBlockRed, FillBlockBlue],
     ];
     const result = FillSupport.flipMatrixV(test);
     expect(result[0]).toStrictEqual([
       FillEmpty,
-      FillColors.Red,
-      FillColors.Red,
-      FillColors.Red,
-      FillColors.Blue,
+      FillBlockRed,
+      FillBlockRed,
+      FillBlockRed,
+      FillBlockBlue,
     ]);
     expect(result[1]).toStrictEqual([
-      FillColors.Red,
-      FillColors.Black,
-      FillColors.Red,
+      FillBlockRed,
+      FillBlockBlack,
+      FillBlockRed,
       FillEmpty,
       FillEmpty,
     ]);
     expect(result[2]).toStrictEqual([
-      FillColors.Black,
-      FillColors.Yellow,
+      FillBlockBlack,
+      FillBlockYellow,
       FillEmpty,
       FillEmpty,
       FillEmpty,

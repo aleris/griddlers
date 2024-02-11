@@ -1,7 +1,6 @@
-@import "src/style/vars";
+@import "../style/vars";
 
 .Cell {
-  cursor: pointer;
   width: 100%;
   height: 100%;
   transition: all 0.2s ease;
@@ -16,14 +15,24 @@
     background-color: $color-highlight !important;
   }
 
-  &:hover {
-    //filter: brightness(80%);
-    box-shadow: inset 0 0 8px 0 $color-highlight;
+  &.Cell--Interactive {
+    cursor: pointer;
+    &:hover {
+      //filter: brightness(150%);
+      box-shadow: inset 0 0 10px 0 $color-highlight;
+      //filter: inset(5px 5px 10px #44444d81);
+    }
+
+    &--FilledBlock {
+      &:hover {
+        filter: brightness(150%);
+      }
+    }
   }
 
   &--SelectionTip {
     position: absolute;
-    border: 1px solid $color-highlight;
+    border: 1px solid $color-cell-border;
     display: block;
     background-color: #fff;
     padding: 0.15rem 0.25rem;

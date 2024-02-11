@@ -9,6 +9,9 @@ import { Lock } from "./Lock";
 import { ProgressView } from "./ProgressView";
 import { BoardButtonView } from "./BoardButtonView";
 import { PackBoardView } from "./PackBoardView";
+import classNames from "../classNames";
+import { IconButton } from "../IconButton";
+import NextSvg from "../assets/next.svg";
 
 export const PackPage = () => {
   const { state, dispatch } = useContext(GameContext);
@@ -16,7 +19,6 @@ export const PackPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("PackPage useEffect");
     if (selectedPack === null) {
       history.replace("/");
     }
@@ -28,6 +30,10 @@ export const PackPage = () => {
   };
 
   const handleBackButtonOnClick = () => {
+    history.go(-1);
+  };
+
+  const handleOnNextClick = () => {
     history.go(-1);
   };
 
@@ -82,6 +88,20 @@ export const PackPage = () => {
             </BoardButtonView>
           </div>
         ))}
+      </div>
+      <div
+        className={classNames("PackPage--Next", {
+          Won: remaining === 0,
+        })}
+      >
+        <div className="Button">
+          <IconButton
+            type="Primary"
+            icon={<img src={NextSvg} alt="Continue" />}
+            onClick={handleOnNextClick}
+            title="Continue"
+          />
+        </div>
       </div>
     </div>
   );

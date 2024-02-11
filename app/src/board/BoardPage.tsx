@@ -4,18 +4,23 @@ import { useHistory } from "react-router-dom";
 import { changePaletteFillAction } from "../actions/ChangePaletteFillAction";
 import { fillCellAction } from "../actions/FillCellAction";
 import { selectBoardAction } from "../actions/SelectBoardAction";
-import { BackButton } from "../BackButton";
 import { GameContext } from "../GameContext";
 import { Fill, GridPosition } from "./Board";
 import { BoardView } from "./BoardView";
+import { cleanBoardAction } from "../actions/CleanBoardAction";
+import { HelpPage } from "./HelpPage";
+import { HudIconButton } from "../HudIconButton";
+import HelpIcon from "../assets/help.svg";
+import RubberIcon from "../assets/rubber.svg";
+import BackIcon from "../assets/back.svg";
 
 export const BoardPage = () => {
   const { state, dispatch } = useContext(GameContext);
   const board = state.selectedBoard;
   const history = useHistory();
+  const [isHelpPageOpen, setIsHelpPageOpen] = React.useState(false);
 
   useEffect(() => {
-    console.log("BoardPage useEffect");
     if (board === null) {
       history.replace("/");
     }
@@ -49,12 +54,21 @@ export const BoardPage = () => {
   const handleBackButtonClick = () => {
     history.go(-1);
   };
+  const handleClearButtonClick = () => {
+    if (state.selectedBoard === null) {
+      console.error("BoardPage handleClearButtonClick selectedBoard is null");
+      return;
+    }
+    dispatch(cleanBoardAction());
+  };
 
   return (
     <div className="BoardPage">
-      <div className="BoardPage--Back">
-        <BackButton onClick={handleBackButtonClick} />
-      </div>
+      <HudIconButton
+        onClick={handleBackButtonClick}
+        title="Go Back"
+        iconSrc={BackIcon}
+      />
       {board ? (
         <BoardView
           board={board}
@@ -66,6 +80,25 @@ export const BoardPage = () => {
       ) : (
         <span>...</span>
       )}
+      {!(board?.completed ?? false) ? (
+        <HudIconButton
+          onClick={handleClearButtonClick}
+          title="Clear Board"
+          iconSrc={RubberIcon}
+          justify="End"
+        />
+      ) : null}
+      <HudIconButton
+        onClick={() => setIsHelpPageOpen(true)}
+        title="Show Help Page"
+        iconSrc={HelpIcon}
+        justify="End"
+        push="1"
+      />
+      <HelpPage
+        isOpen={isHelpPageOpen}
+        onClose={() => setIsHelpPageOpen(false)}
+      />
     </div>
   );
 };

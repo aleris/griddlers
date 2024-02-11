@@ -33,6 +33,11 @@ import { Board } from "./board/Board";
 import { BoardBuilder } from "./board/BoardBuilder";
 import { PackWithProgress } from "./home/PackWithProgress";
 import { BoardRegistry } from "./registry/BoardRegistry";
+import {
+  CleanBoardActionCode,
+  CleanBoardActionType,
+  cleanBoardReducer,
+} from "./actions/CleanBoardAction";
 
 export type GameActionType =
   | LoadPacksActionType
@@ -40,6 +45,7 @@ export type GameActionType =
   | SelectBoardActionType
   | ChangePaletteFillActionType
   | FillCellActionType
+  | CleanBoardActionType
   | CompleteBoardActionType;
 
 export type GameState = {
@@ -56,18 +62,17 @@ export type GameAction = (
 ) => void;
 export type GameActionDispatch = Dispatch<GameAction | GameActionType>;
 
-const dispatchWithGameAction = (
-  state: GameState,
-  dispatch: Dispatch<GameActionType>
-) => async (action: GameAction | GameActionType) => {
-  if (action instanceof Function) {
-    console.log("action", action.name, "->");
-    await action(state, dispatchWithGameAction(state, dispatch));
-  } else {
-    console.log("action", action.code, action);
-    await dispatch(action);
-  }
-};
+const dispatchWithGameAction =
+  (state: GameState, dispatch: Dispatch<GameActionType>) =>
+  async (action: GameAction | GameActionType) => {
+    if (action instanceof Function) {
+      // console.log('action', action.name, '->')
+      await action(state, dispatchWithGameAction(state, dispatch));
+    } else {
+      // console.log('action', action.code, action)
+      await dispatch(action);
+    }
+  };
 
 type Context = {
   state: GameState;
@@ -75,10 +80,15 @@ type Context = {
 };
 
 const gameReducer = (state: GameState, action: GameActionType): GameState => {
-  console.log("reducer", action);
   switch (action.code) {
     case LoadPacksActionCode:
       return loadPacksReducer(state, action);
+
+    case SelectBoardActionCode:
+      return selectBoardReducer(state, action);
+
+    case SelectPackActionCode:
+      return selectPackReducer(state, action);
 
     case FillCellActionCode:
       return fillCellReducer(state, action);
@@ -86,11 +96,8 @@ const gameReducer = (state: GameState, action: GameActionType): GameState => {
     case ChangePaletteFillActionCode:
       return changePaletteFillReducer(state, action);
 
-    case SelectBoardActionCode:
-      return selectBoardReducer(state, action);
-
-    case SelectPackActionCode:
-      return selectPackReducer(state, action);
+    case CleanBoardActionCode:
+      return cleanBoardReducer(state, action);
 
     case CompleteBoardActionCode:
       return completeBoardReducer(state, action);
@@ -119,7 +126,11 @@ export const GameContext = createContext<Context>({
   dispatch: () => () => {},
 });
 
-export const GameProvider: React.FunctionComponent = ({ children }) => {
+type GameProviderProps = {
+  children: React.ReactNode;
+};
+
+export const GameProvider = ({ children }: GameProviderProps) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
   return (

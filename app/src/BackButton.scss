@@ -2,33 +2,39 @@
 @import "./style/vars";
 
 .BackButton {
-  padding: 0;
-  border: 0.5px solid rgba(0, 0, 0, 0.35);
-  border-top-left-radius: 2vmin;
-  border-bottom-left-radius: 2vmin;
-  height: 3vmin;
-  background-color: transparent;
-  cursor: pointer;
-  animation: scale-up-center 0.4s ease-out both;
-  outline: none;
   position: fixed;
   left: 0;
   top: 0;
-  margin: 1vmin 0 0 1vmin;
 
-  &:hover {
-    background-color: $color-highlight;
-  }
+  button {
+    padding: 6px;
+    border: none;
+    border-radius: 5vmin;
+    background-color: transparent;
+    cursor: pointer;
+    animation: scale-up-center 0.4s ease-out both;
+    outline: none;
+    margin: 1vmin 0 0 1vmin;
 
-  &:active,
-  &:focus {
-    box-shadow: 0 0 0 2px $color-highlight;
-  }
+    &:hover {
+      background-color: $color-highlight;
+      border-color: $color-highlight;
 
-  img {
-    display: block;
-    margin: auto auto auto 0;
-    width: 2vmin;
-    height: 2vmin;
+      img {
+        filter: invert(100%);
+      }
+    }
+
+    &:active,
+    &:focus {
+      box-shadow: 0 0 0 2px $color-highlight;
+    }
+
+    img {
+      display: block;
+      margin: auto;
+      width: 2.5vmin;
+      height: 2.5vmin;
+    }
   }
 }

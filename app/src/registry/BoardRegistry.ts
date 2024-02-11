@@ -7,9 +7,10 @@ import { NextBoardRepository } from "../repository/NextBoardRepository";
 import { BoardSpec } from "./BoardSpec";
 import { pack1 } from "./pack1";
 import { pack2 } from "./pack2";
+import { pack3 } from "./pack3";
 
 export class BoardRegistry {
-  static packs = [pack1, pack2];
+  static packs = [pack1, pack2, pack3];
   static packsMapById = new Map(
     BoardRegistry.packs.map((pack) => [pack.id, pack])
   );
@@ -38,7 +39,7 @@ export class BoardRegistry {
     return spec;
   }
 
-  static async getCompletedOrCurrentById(
+  static async getCurrentOrLoad(
     packId: string,
     boardId: string
   ): Promise<Board> {
@@ -51,12 +52,7 @@ export class BoardRegistry {
       return next;
     }
 
-    const completed = await this.getCompleted(packId);
-    const board = completed.find((board) => board.spec.boardId === boardId);
-    if (board === undefined) {
-      throw new Error(`${boardId} board not found in pack ${packId}`);
-    }
-    return board;
+    return await this.load(packId, boardId);
   }
 
   static async getNext(packId: string): Promise<Board | null> {
@@ -81,10 +77,18 @@ export class BoardRegistry {
       .sort((a, b) => a.spec.positionInPack - b.spec.positionInPack);
   }
 
-  static async completeBoard(filledBoard: Board): Promise<Board | null> {
-    const persistedBoardWithGuessed = BoardMapper.toPersistedGuessed(
-      filledBoard
+  static async getAll(packId: string): Promise<Board[]> {
+    const boardSpecs = BoardRegistry.packsMapById.get(packId)?.boardSpecs ?? [];
+    return Promise.resolve(
+      boardSpecs
+        .map((boardSpec) => BoardBuilder.buildBoardFromSpec(packId, boardSpec))
+        .sort((a, b) => a.spec.positionInPack - b.spec.positionInPack)
     );
+  }
+
+  static async completeBoard(filledBoard: Board): Promise<Board | null> {
+    const persistedBoardWithGuessed =
+      BoardMapper.toPersistedGuessed(filledBoard);
     await CompletedBoardsRepository.setBoard(persistedBoardWithGuessed);
     return await this.next(filledBoard.packId);
   }

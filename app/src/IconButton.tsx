@@ -8,6 +8,7 @@ type Props = {
   disabled?: boolean;
   icon: ReactNode;
   onClick: () => void;
+  title?: string;
   clickDelayMs?: number;
 };
 
@@ -17,6 +18,7 @@ export const IconButton = ({
   disabled = false,
   icon,
   onClick,
+  title,
   clickDelayMs = 250,
 }: Props) => {
   const [animate, setAnimate] = useState(false);
@@ -37,6 +39,7 @@ export const IconButton = ({
       className={buttonClassName}
       disabled={disabled}
       onClick={handleButtonOnClick}
+      title={title}
     >
       {icon}
     </button>

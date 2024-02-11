@@ -1,29 +1,45 @@
 import { BoardSpec } from "../registry/BoardSpec";
 import { PaletteSpec } from "../registry/PaletteSpec";
-import { Board, Fill, FillEmpty, FillHiddenBlock, Grid } from "./Board";
+import {
+  Board,
+  ColorKey,
+  ColorKeyEmpty,
+  Fill,
+  FillEmpty,
+  FillHiddenBlock,
+  FillMarkedEmpty,
+  Grid,
+} from "./Board";
 import { BoardClues } from "./BoardClues";
 import { BoardSupport } from "./BoardSupport";
 import { FillSupport } from "./FillSupport";
 
 export class BoardBuilder {
   static buildBoardFromSpec(packId: string, boardSpec: BoardSpec): Board {
-    const fillMatrix = this.buildFillMatrixFromSpec(boardSpec);
-    return this.buildBoardFromFillMatrix(packId, boardSpec, fillMatrix);
+    const palette =
+      boardSpec.palette ??
+      this.resolvePaletteSpecFromBoard(boardSpec.cellSpecs);
+    const fillMatrix = this.buildFillMatrixFromSpec(
+      boardSpec.cellSpecs,
+      palette
+    );
+    const board = this.buildBoardFromFillMatrix(
+      packId,
+      boardSpec,
+      palette,
+      fillMatrix
+    );
+    return board;
   }
 
-  static buildGridFromPictureSpec(boardSpec: BoardSpec): Grid {
-    const fillMatrix = this.buildFillMatrixFromSpec(boardSpec);
-    return this.buildGridFromFillMatrix(fillMatrix);
-  }
-
-  private static buildFillMatrixFromSpec({
-    cellSpecs,
-    palette,
-  }: BoardSpec): Fill[][] {
+  private static buildFillMatrixFromSpec(
+    cellSpecs: string,
+    palette: PaletteSpec
+  ): Fill[][] {
     const rows = cellSpecs.trim().split("\n");
     const grid: Fill[][] = [];
     for (let ri = 0; ri !== rows.length; ri++) {
-      const rowSpec = rows[ri].split("");
+      const rowSpec = rows[ri].match(/./gu) ?? [];
       const row = rowSpec.map((colSpec) => {
         const fill = palette[colSpec];
         return fill !== undefined ? fill : FillEmpty;
@@ -33,9 +49,22 @@ export class BoardBuilder {
     return grid;
   }
 
+  static resolvePaletteSpecFromBoard(cellSpecs: string): PaletteSpec {
+    const colorKeys = new Set(cellSpecs.replace(/\n/g, ""));
+    const palette: PaletteSpec = Array.from(colorKeys)
+      .map((keyString) => keyString as ColorKey)
+      .filter((key) => key !== ColorKeyEmpty)
+      .reduce((acc, key) => {
+        acc[key] = FillSupport.mapColorKeyToColor(key);
+        return acc;
+      }, {} as PaletteSpec);
+    return palette;
+  }
+
   static buildBoardFromFillMatrix(
     packId: string,
     boardSpec: BoardSpec,
+    paletteSpec: PaletteSpec,
     fillMatrix: Fill[][]
   ): Board {
     const grid: Grid = this.buildGridFromFillMatrix(fillMatrix);
@@ -48,7 +77,7 @@ export class BoardBuilder {
       boardSpec.withHiddenColors
     );
     const palette = this.buildPaletteFromSpec(
-      boardSpec.palette,
+      paletteSpec,
       boardSpec.withHiddenColors
     );
     const currentPaletteFill = this.getFirstColorFill(palette);
@@ -78,9 +107,8 @@ export class BoardBuilder {
       (cell, coordinateKey, rowIndex, colIndex) => {
         const fill = fromGuessed ? cell.guessed : cell.fill;
         const hiddenFill = hideColors ? FillSupport.hideColor(fill) : fill;
-        return (fillMatrix[rowIndex][
-          colIndex
-        ] = FillSupport.fillMarkedEmptyToEmpty(hiddenFill));
+        return (fillMatrix[rowIndex][colIndex] =
+          FillSupport.fillMarkedEmptyToEmpty(hiddenFill));
       }
     );
     return fillMatrix;
@@ -94,9 +122,9 @@ export class BoardBuilder {
       FillSupport.fillEmptyToMarkedEmpty(fill)
     );
     if (withHiddenColors) {
-      return [palette[0], FillHiddenBlock];
+      return [FillEmpty, FillMarkedEmpty, FillHiddenBlock];
     }
-    return palette;
+    return [FillEmpty, FillMarkedEmpty, ...palette];
   }
 
   static getFirstColorFill(palette: (string | null)[]): Fill {

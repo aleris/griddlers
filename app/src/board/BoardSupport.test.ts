@@ -1,8 +1,9 @@
 import { BoardSpec } from "../registry/BoardSpec";
-import { FillColors, FillEmpty, FillHiddenBlock } from "./Board";
+import { FillEmpty, FillHiddenBlock } from "./Board";
 import { BoardBuilder } from "./BoardBuilder";
 import { BoardSupport } from "./BoardSupport";
 import { FillSupport } from "./FillSupport";
+import { describe, expect, test } from "vitest";
 
 describe("BoardWinChecker", () => {
   const testSpec: BoardSpec = {
@@ -10,15 +11,9 @@ describe("BoardWinChecker", () => {
     positionInPack: 1,
     difficulty: 1,
     cellSpecs: `
-#.
-BR
+⬛⬜
+🟦🟥
 `,
-    palette: {
-      ".": FillEmpty,
-      "#": FillColors.Black,
-      B: FillColors.Blue,
-      R: FillColors.Red,
-    },
     withHiddenColors: true,
   };
   const board = BoardBuilder.buildBoardFromSpec("pack", testSpec);

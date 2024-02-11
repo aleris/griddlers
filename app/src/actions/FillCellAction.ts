@@ -17,7 +17,6 @@ export const fillCellReducer = (
   { from, to, fill }: FillCellActionType
 ): GameState => {
   if (state.selectedBoard === null) {
-    console.error("fillCellReducer selectedBoard is null");
     return state;
   }
   const grid = mutateGridWithGuessFill(
@@ -26,7 +25,6 @@ export const fillCellReducer = (
     to,
     fill
   );
-  console.log("fillCellReducer grid after", grid);
   return {
     ...state,
     selectedBoard: {
@@ -45,39 +43,33 @@ function mutateGridWithGuessFill(
   return BoardSupport.replaceGridZone(grid, from, to, undefined, guessFill);
 }
 
-export const fillCellAction = (
-  from: GridPosition,
-  to: GridPosition,
-  fill: Fill
-) => async (state: GameState, dispatch: GameActionDispatch) => {
-  if (state.selectedBoard === null) {
-    console.error("fillCellAction selectedBoard is null");
-    return;
-  }
-  const grid = mutateGridWithGuessFill(
-    state.selectedBoard.grid,
-    from,
-    to,
-    fill
-  );
-  const board = { ...state.selectedBoard, grid };
-  const completed = BoardSupport.isCompleted(board);
-  await dispatch({
-    code: FillCellActionCode,
-    from,
-    to,
-    fill,
-  });
-  console.log("completed", completed);
-  if (completed) {
-    const revealedBoard = board.spec.withHiddenColors
-      ? BoardSupport.revealHiddenColors(board)
-      : board;
-    console.log("board", revealedBoard);
-    console.log("revealedBoard", revealedBoard);
-    const completeBoardActionDispatch = await completeBoardAction(
-      revealedBoard
+export const fillCellAction =
+  (from: GridPosition, to: GridPosition, fill: Fill) =>
+  async (state: GameState, dispatch: GameActionDispatch) => {
+    if (state.selectedBoard === null) {
+      return;
+    }
+    const grid = mutateGridWithGuessFill(
+      state.selectedBoard.grid,
+      from,
+      to,
+      fill
     );
-    await dispatch(completeBoardActionDispatch);
-  }
-};
+    const board = { ...state.selectedBoard, grid };
+    const completed = BoardSupport.isCompleted(board);
+    await dispatch({
+      code: FillCellActionCode,
+      from,
+      to,
+      fill,
+    });
+    if (completed) {
+      const revealedBoard = board.spec.withHiddenColors
+        ? BoardSupport.revealHiddenColors(board)
+        : board;
+      const completeBoardActionDispatch = await completeBoardAction(
+        revealedBoard
+      );
+      await dispatch(completeBoardActionDispatch);
+    }
+  };

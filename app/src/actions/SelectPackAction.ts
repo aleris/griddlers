@@ -25,17 +25,18 @@ export const selectPackReducer = (
   };
 };
 
-export const selectPackAction = (packId: string) => async (
-  state: GameState,
-  dispatch: Dispatch<SelectPackActionType>
-) => {
-  const pack = await BoardRegistry.getPackWithProgress(packId);
-  const completedBoards = await BoardRegistry.getCompleted(packId);
-  const nextBoard = await BoardRegistry.next(packId);
-  await dispatch({
-    code: SelectPackActionCode,
-    pack,
-    completedBoards,
-    nextBoard,
-  });
-};
+export const selectPackAction =
+  (packId: string, showAsSolved: boolean) =>
+  async (state: GameState, dispatch: Dispatch<SelectPackActionType>) => {
+    const pack = await BoardRegistry.getPackWithProgress(packId);
+    const completedBoards = showAsSolved
+      ? await BoardRegistry.getAll(packId)
+      : await BoardRegistry.getCompleted(packId);
+    const nextBoard = showAsSolved ? null : await BoardRegistry.next(packId);
+    await dispatch({
+      code: SelectPackActionCode,
+      pack,
+      completedBoards,
+      nextBoard,
+    });
+  };

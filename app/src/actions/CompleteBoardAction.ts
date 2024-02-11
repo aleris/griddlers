@@ -1,4 +1,3 @@
-import { default as firebase } from "firebase/app";
 import { Board } from "../board/Board";
 import { GameState, GameActionDispatch } from "../GameContext";
 import { PackWithProgress } from "../home/PackWithProgress";
@@ -34,24 +33,16 @@ export const completeBoardReducer = (
   };
 };
 
-export const completeBoardAction = (board: Board) => async (
-  state: GameState,
-  dispatch: GameActionDispatch
-) => {
-  firebase
-    .analytics()
-    .logEvent("complete_board", {
-      boardId: board.spec.boardId,
-      difficulty: board.spec.difficulty,
+export const completeBoardAction =
+  (board: Board) => async (state: GameState, dispatch: GameActionDispatch) => {
+    const nextBoard = await BoardRegistry.completeBoard(board);
+    const completedBoards = await BoardRegistry.getCompleted(board.packId);
+    const pack = await BoardRegistry.getPackWithProgress(board.packId);
+    await dispatch({
+      code: CompleteBoardActionCode,
+      board,
+      nextBoard,
+      completedBoards,
+      pack,
     });
-  const nextBoard = await BoardRegistry.completeBoard(board);
-  const completedBoards = await BoardRegistry.getCompleted(board.packId);
-  const pack = await BoardRegistry.getPackWithProgress(board.packId);
-  await dispatch({
-    code: CompleteBoardActionCode,
-    board,
-    nextBoard,
-    completedBoards,
-    pack,
-  });
-};
+  };

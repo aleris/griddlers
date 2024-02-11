@@ -1,4 +1,4 @@
-@import "src/style/animations";
+@import "../style/animations";
 
 .Board {
   display: flex;
@@ -23,7 +23,7 @@
     justify-content: space-between;
     align-items: center;
     margin-top: -2rem;
-    transform: translateX(-1000px);
+    transform: translateX(-10000px);
 
     & > .Medals {
       height: 2rem;
@@ -37,7 +37,7 @@
     }
 
     & > .Button {
-      transform: translateX(-1000px);
+      transform: translateX(-10000px);
       opacity: 0;
     }
 
@@ -56,10 +56,3 @@
     }
   }
 }
-
-//@media screen and (orientation: portrait) {
-//  .Board {
-//    transform: rotate(-90deg);
-//    transform-origin: 50% 50%;
-//  }
-//}

@@ -1,0 +1,55 @@
+@import "./style/animations";
+@import "./style/vars";
+
+.HudIconButton {
+  position: fixed;
+  top: 0;
+
+  &--Start--0 {
+    left: 0;
+  }
+
+  &--Start--1 {
+    left: 4vmin;
+  }
+
+  &--End--0 {
+    right: 0;
+  }
+
+  &--End--1 {
+    right: 4vmin;
+  }
+
+  button {
+    padding: 6px;
+    border: none;
+    border-radius: 5vmin;
+    background-color: transparent;
+    cursor: pointer;
+    animation: scale-up-center 0.4s ease-out both;
+    outline: none;
+    margin: 1vmin;
+
+    &:hover {
+      background-color: $color-highlight;
+      border-color: $color-highlight;
+
+      img {
+        filter: invert(100%);
+      }
+    }
+
+    &:active,
+    &:focus {
+      box-shadow: 0 0 0 2px $color-highlight;
+    }
+
+    img {
+      display: block;
+      margin: auto;
+      width: 2.5vmin;
+      height: 2.5vmin;
+    }
+  }
+}

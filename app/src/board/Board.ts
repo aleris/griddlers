@@ -8,19 +8,52 @@ export type Color = string;
 
 export type Fill = Color | Empty | HiddenBlock | null;
 
+export const ColorKeyEmpty = "⬜";
+export const ColorKeyBlack = "⬛";
+export const ColorKeyRed = "🟥";
+export const ColorKeyViolet = "🟪";
+export const ColorKeyBlue = "🟦";
+export const ColorKeyGreen = "🟩";
+export const ColorKeyYellow = "🟨";
+export const ColorKeyOrange = "🟧";
+export const ColorKeyBrown = "🟫";
+export const ColorKeyDarkBlue = "🔵";
+export const ColorKeyDarkGreen = "🟢";
+export const ColorKeyDarkYellow = "🟡";
+export const ColorKeyDarkMaroon = "🟤";
+
+export type ColorKey =
+  | typeof ColorKeyEmpty
+  | typeof ColorKeyBlack
+  | typeof ColorKeyRed
+  | typeof ColorKeyViolet
+  | typeof ColorKeyBlue
+  | typeof ColorKeyGreen
+  | typeof ColorKeyYellow
+  | typeof ColorKeyOrange
+  | typeof ColorKeyBrown
+  | typeof ColorKeyDarkBlue
+  | typeof ColorKeyDarkGreen
+  | typeof ColorKeyDarkYellow
+  | typeof ColorKeyDarkMaroon;
+
 export const FillEmpty: Empty = "";
 export const FillMarkedEmpty: MarkedEmpty = "X";
 export const FillHiddenBlock: HiddenBlock = "?";
-export enum FillColors {
-  White = "#fff",
-  Black = "#444",
-  Red = "#ef5350",
-  Violet = "#ab47bc",
-  Blue = "#42a5f5",
-  Green = "#66bb6a",
-  Yellow = "#ffeb3b",
-  Orange = "#ffa726",
-}
+
+export const FillBlockWhite = "#ffffff";
+export const FillBlockBlack = "#333333";
+export const FillBlockRed = "#ef5350";
+export const FillBlockViolet = "#ab47bc";
+export const FillBlockBlue = "#42a5f5";
+export const FillBlockGreen = "#66bb6a";
+export const FillBlockYellow = "#ffeb3b";
+export const FillBlockOrange = "#ffa726";
+export const FillBlockMaroon = "#A52A2A";
+export const FillBlockDarkBlue = "#00008b";
+export const FillBlockDarkGreen = "#006400";
+export const FillBlockDarkYellow = "#d5b122";
+export const FillBlockDarkMaroon = "#5d0101";
 
 export type Cell = {
   fill: Fill;

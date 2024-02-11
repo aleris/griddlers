@@ -33,6 +33,7 @@
     flex-flow: row nowrap;
     justify-content: flex-start;
     padding: 2vmin;
+    margin-left: -7vmin; // to compensate for the skew
 
     &::before,
     &::after {
