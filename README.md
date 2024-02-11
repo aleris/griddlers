@@ -4,6 +4,8 @@ Color Griddlers is a picture logic puzzle game in which cells in a grid must be 
 according to numbers at the side of the grid to reveal a hidden picture. It is based on popular Nonograms pen and
 paper game. The game is also known as Paint by Numbers, Picross or Pic-a-Pix.
 
+Is a client side web app only. It saves progress in local storage.
+
 
 ## Dev
 
