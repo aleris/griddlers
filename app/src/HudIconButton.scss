@@ -10,7 +10,7 @@
   }
 
   &--Start--1 {
-    left: 4vmin;
+    left: 32px;
   }
 
   &--End--0 {
@@ -18,13 +18,13 @@
   }
 
   &--End--1 {
-    right: 4vmin;
+    right: 32px;
   }
 
   button {
     padding: 6px;
     border: none;
-    border-radius: 5vmin;
+    border-radius: 24px;
     background-color: transparent;
     cursor: pointer;
     animation: scale-up-center 0.4s ease-out both;
@@ -48,8 +48,8 @@
     img {
       display: block;
       margin: auto;
-      width: 2.5vmin;
-      height: 2.5vmin;
+      width: 24px;
+      height: 24px;
     }
   }
 }
