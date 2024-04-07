@@ -8,11 +8,11 @@ $box-shadow: ();
 
 @for $i from 0 through $particles {
   $box-shadow: $box-shadow,
-    (random($width) * 1% - calc($width / 2) * 1%) +
+    (random($width) - $width / 2) +
       px
-      (random($height) * 1% - calc($height / 1.2) * 1%) +
+      (random($height) - $height / 1.2) +
       px
-      hsl(random(360), 100%, 50%);
+      hsl(random(360), 100, 50);
 }
 
 .SuccessAnimationContainer {
