@@ -1,6 +1,6 @@
 import "./App.scss";
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { BoardPage } from "./board/BoardPage";
 import { EditorPage } from "./editor/EditorPage";
 import { GameProvider } from "./GameContext";
